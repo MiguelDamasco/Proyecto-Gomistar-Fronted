@@ -6,8 +6,11 @@ import PrivateRoute from './PrivateRoute';
 import './App.css';
 import UserDashboard from './UserDashboard';
 import AdminDashboard from './component/AdminDashboard';
+import UserTest from './component/UserTest';
+import CreateUser from './component/CreateUserComponent'
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './component/ProtectedRoute';
+import ShipDashboard from './component/ShipDashboard';
 //import { useAuth, AuthProvider } from './AuthProvider';
 
 const App = () => {
@@ -26,6 +29,14 @@ const App = () => {
             }
           />
           <Route
+            path="/dashboard/admin/ship"
+            element={
+              <ProtectedRoute roleRequired="ADMIN">
+                <ShipDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard/user"
             element={
               <ProtectedRoute roleRequired="USER">
@@ -39,6 +50,13 @@ const App = () => {
               <ProtectedRoute roleRequired="USER">
                 <UserDashboard />
               </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/userTest"
+            element={
+                <CreateUser />
             }
           />
         </Routes>

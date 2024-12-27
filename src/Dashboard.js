@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import UserTest from './component/UserTest';
 import './btnLogout.css';
 
 const Dashboard = () => {
@@ -26,6 +27,7 @@ const Dashboard = () => {
         </button>
     </div>
 </nav>
+    <UserTest ></UserTest>
 
       <div style={{ padding: '20px' }}>
         <h1>Dashboard</h1>
@@ -33,26 +35,26 @@ const Dashboard = () => {
         <div class="container">
     <div class="card">
     <Link to="/userDashboard">
-        <img src="https://5621658.fs1.hubspotusercontent-na1.net/hub/5621658/hubfs/tipos-clasificadores-documentos.jpg?width=800&name=tipos-clasificadores-documentos.jpg" alt="Imagen 1"/>
-        <div class="title">Enlace 1</div>
+        <img src="https://img.freepik.com/vector-premium/perfil-avatar-hombre-icono-redondo_24640-14044.jpg"
+        style={{ height: "300px", width: "300px" }} 
+        alt="Imagen 1"/>
+        <div class="title">Mis datos</div>
       </Link>
     </div>
     <div class="card">
       <a href="https://example.com/2">
-        <img src="https://st.depositphotos.com/34078792/54886/v/1600/depositphotos_548867998-stock-illustration-user-avatar-character-cartoon-avatar.jpg" alt="Imagen 2"/>
-        <div class="title">Enlace 2</div>
+        <img src="https://png.pngtree.com/png-clipart/20190922/original/pngtree-documentation-icon-in-trendy-style-isolated-background-png-image_4779691.jpg" 
+        style={{ height: "300px", width: "300px" }} 
+        alt="Imagen 2"/>
+        <div class="title">Documentos</div>
       </a>
     </div>
     <div class="card">
-      <a href="https://example.com/3">
-        <img src="https://via.placeholder.com/300" alt="Imagen 3"/>
-        <div class="title">Enlace 3</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="https://example.com/4">
-        <img src="https://via.placeholder.com/300" alt="Imagen 4"/>
-        <div class="title">Enlace 4</div>
+      <a href="/dashboard/userTest">
+        <img src="https://w7.pngwing.com/pngs/350/89/png-transparent-computer-icons-google-alerts-others-orange-silhouette-red-alert.png" 
+        style={{ height: "300px", width: "300px" }} 
+        alt="Imagen 3"/>
+        <div class="title">Alertas</div>
       </a>
     </div>
   </div>
