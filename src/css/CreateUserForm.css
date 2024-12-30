@@ -1,20 +1,2 @@
-form {
-    max-width: 400px; /* Limita el ancho máximo */
-    margin: 0 auto; /* Centra horizontalmente */
-    padding: 20px; /* Agrega espacio interno */
-    border: 1px solid #ccc; /* Borde opcional */
-    border-radius: 10px; /* Esquinas redondeadas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra opcional */
-    background-color: #fff; /* Fondo blanco */
-  }
-  
-  body {
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    height: 100vh; /* Ocupa el 100% de la altura de la ventana */
-    margin: 0;
-    background-color: #f9f9f9; /* Fondo opcional */
-  }
-  
+
   

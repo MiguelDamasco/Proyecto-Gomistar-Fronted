@@ -30,7 +30,7 @@ const AdminDashboard = () => {
         <h1>Dashboard Admin</h1>
         <div class="container">
     <div class="card">
-    <Link to="/dashboard/admin/ship">
+    <Link to="/barcos">
         <img src="https://cdn-icons-png.freepik.com/512/90/90570.png"
         style={{ height: "300px", width: "300px" }} 
         alt="Imagen de embarcaciones"/>
@@ -38,12 +38,12 @@ const AdminDashboard = () => {
       </Link>
     </div>
     <div class="card">
-      <a href="#">
+      <Link to="/gestion_usuario">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8gXGxAPC35Ha1Qw2yryImpvyoMkMgV0gRZA&s" 
         style={{ height: "300px", width: "300px" }}
         alt="Imagen de empleados"/>
         <div class="title">Empleados</div>
-      </a>
+      </Link>
     </div>
     <div class="card">
       <a href="#">

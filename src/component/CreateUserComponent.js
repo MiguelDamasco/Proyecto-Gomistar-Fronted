@@ -4,16 +4,22 @@ import DataTable from "react-data-table-component";
 import Modal from "react-modal";
 import ModalForm from "./modal/ModalForm";
 import CreateUserForm from "./CreateUserForm";
+import NavBar from "./NavBarComponent";
+import { useNavigate, Link, NavLink } from 'react-router-dom';
 import "../css/MyTable.css";
 import "../css/CreateUserForm.css";
+import "../css/NavegationDir.css";
 
 const CreateUser = () => {
   const [users, setUsers] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
+    const myUsername = localStorage.getItem("username");
+    setUsername(myUsername);
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -200,6 +206,14 @@ const CreateUser = () => {
 
 
   return (
+    <>
+    <NavBar myUser={username}></NavBar>
+    <div className='navegation-container'>
+      <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
+      <p className="separator">&gt;</p>
+      <NavLink className="active">Crear Usuario</NavLink>
+      <p className="hidden-separator">&gt;</p>
+   </div>
     <div style={{ padding: "1rem" }}>
      <div className="create-user-form">
      <h1>Crear Usuario</h1>
@@ -315,6 +329,7 @@ const CreateUser = () => {
         onSave={handleSave}
       />
     </div>
+    </>
   );
 };
 

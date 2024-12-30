@@ -1,0 +1,38 @@
+
+.navegation-container {
+    display: flex;
+    padding-left: 2rem;
+    gap: 1.5rem;
+    padding-top: 0rem;
+    align-items: center;
+    text-align: center;
+    background-color: #232F3E;
+}
+
+.active {
+    color: #F9F9FA;
+}
+
+.active:hover {
+    color: #F9F9FA;
+    text-decoration: none;
+}
+
+.no-active {
+    color: #44B9C6;
+    text-decoration: underline;
+}
+
+.separator {
+    color: #F9F9FA;
+    font-size: 2rem;
+    margin: 0;
+    padding-bottom: 0.5rem;
+}
+
+.hidden-separator{
+    color: #232F3E;
+    font-size: 2rem;
+    margin: 0;
+    padding-bottom: 0.5rem;
+}

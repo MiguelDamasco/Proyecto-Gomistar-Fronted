@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
+import { userContext } from './App';
 import './Login.css';
 
 const Login = () => {
@@ -10,11 +11,19 @@ const Login = () => {
   //const [roles, setRoles] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  
+  const {user, setUser} = useContext(userContext);
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const MyUser = {
+      "id": "",
+      "username": "",
+      "roles": [],
+      "token": ""
+    };
 
     try {
       // Primer request: Login
@@ -25,7 +34,7 @@ const Login = () => {
 
       // Guardar el token en localStorage
       const token = response.data.token;
-      //const username = response.data.username;
+      const myUsername = response.data.username;
       localStorage.setItem('token', token);
       localStorage.setItem('username', response.data.username);
       console.log("token: " + token)
@@ -72,12 +81,22 @@ const Login = () => {
           console.warn('No se encontraron roles para el usuario.');
           alert('No se encontraron roles para el usuario.');
         }
-        login({ token, username, id, roles });
-        
+        //login({ token, username, id, roles });
+        console.log("mi id: " + id);
+        console.log("mi username: " + "willy!");
+        console.log("mis roles: " + roles.length);
+        console.log("mi token: " + token);
+        MyUser.id = id;
+        MyUser.username = myUsername;
+        MyUser.roles = roles;
+        MyUser.token = token;
+        console.log(MyUser);
+        setUser(MyUser);
+        //console.log("Mi usuario logeado: " + loggedUser);
         if (roles.includes('ADMIN')) {
-          navigate('/dashboard/admin');
+          navigate('/admin_panel');
         } else if (roles.includes('USER')) {
-          navigate('/dashboard/user');
+          navigate('/dashboard');
         } else {
           alert('No tienes acceso a ningún dashboard.');
         }
@@ -118,7 +137,7 @@ const Login = () => {
       </button>
 
       <p class="signup-link">
-        Olvidaste la contraseña?
+        Olvidaste la contraseña?&nbsp;
         <a href="">Restablecer</a>
       </p>
    </form>

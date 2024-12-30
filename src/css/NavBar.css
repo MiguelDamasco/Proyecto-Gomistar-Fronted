@@ -1,0 +1,29 @@
+.navbar {
+    background-color: #161D26;
+    color: #F9F9FA;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 2 1rem;
+}
+
+.nav-text {
+    margin-left: 1.5vh;
+    display: flex;
+    text-align:center;
+}
+
+.logout-container {
+    margin-right: 3.5vh;
+}
+
+#logo {
+    height: 5rem;
+    width: 5rem;
+}
+
+#text {
+    padding-top: 1.2rem;
+    margin-left: 0.5rem;
+}

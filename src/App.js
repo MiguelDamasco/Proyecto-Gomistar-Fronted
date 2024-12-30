@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import PrivateRoute from './PrivateRoute';
@@ -13,55 +13,54 @@ import ProtectedRoute from './component/ProtectedRoute';
 import ShipDashboard from './component/ShipDashboard';
 //import { useAuth, AuthProvider } from './AuthProvider';
 
-const App = () => {
- // const { user } = useAuth(); 
-  return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path='/login' element={<Login></Login>}></Route>
-          <Route
-            path="/dashboard/admin"
-            element={
-              <ProtectedRoute roleRequired="ADMIN">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/admin/ship"
-            element={
-              <ProtectedRoute roleRequired="ADMIN">
-                <ShipDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/user"
-            element={
-              <ProtectedRoute roleRequired="USER">
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/userDashboard"
-            element={
-              <ProtectedRoute roleRequired="USER">
-                <UserDashboard />
-              </ProtectedRoute>
-            }
-          />
+export const userContext = React.createContext();
 
-          <Route
-            path="/dashboard/userTest"
-            element={
-                <CreateUser />
-            }
-          />
-        </Routes>
-      </Router>
-    </AuthProvider>
+const App = () => {
+ 
+  const [user, setUser] = useState(null);
+
+  const username = localStorage.getItem('username');
+  const storedList = localStorage.getItem('roles');
+  const roleList = storedList ? JSON.parse(storedList) : [];
+
+  console.log("lista de roles: " + roleList);
+  console.log("username: " + username);
+
+  return (
+
+    <userContext.Provider value={{user, setUser}}>
+    <BrowserRouter>
+        <Routes>
+        <Route path="/login" element={<Login />} />
+
+        <Route
+          element={
+            <ProtectedRoute
+              isAllowed={!!username && roleList.includes('USER')}
+              redirectTo="/login"
+            />
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/configuration" element={<UserDashboard />} />
+        </Route>
+
+        <Route
+          element={
+            <ProtectedRoute
+              isAllowed={!!username && roleList.includes('ADMIN')}
+              redirectTo="/login"
+            />
+          }
+        >
+          <Route path="/admin_panel" element={<AdminDashboard />}></Route>
+          <Route path="/barcos" element={<ShipDashboard />}></Route>
+          <Route path="/gestion_usuario" element={<CreateUser />}></Route>
+
+        </Route>
+      </Routes>
+    </BrowserRouter>
+    </userContext.Provider>
   ); };
 
 export default App;
