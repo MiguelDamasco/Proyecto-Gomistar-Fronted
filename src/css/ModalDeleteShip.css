@@ -1,0 +1,73 @@
+/* Estilo del fondo del modal (oscurecer el fondo) */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que esté por encima de todos los elementos */
+}
+
+.title-container {
+    color: #161D26;
+}
+
+.main-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 20px;
+    position: relative;
+}
+
+.body-container {
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+
+/* Estilo del botón de cierre */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.close-button button {
+    background-color: transparent;
+    border: none;
+}
+
+/* Estilo del pie de botones */
+.footer-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.footer-container button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #161D26;
+}
+
+.footer-container button:hover {
+    background-color: #f5f5f5;
+}
+
+#delete-btn {
+    background-color:crimson;
+    color: #F9F9FA;
+}

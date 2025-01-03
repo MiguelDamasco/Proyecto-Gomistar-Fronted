@@ -3,17 +3,20 @@ import { BrowserRouter as Router, Route, Routes, Navigate, BrowserRouter } from 
 import Login from './Login';
 import Dashboard from './Dashboard';
 import PrivateRoute from './PrivateRoute';
-import './App.css';
+//import './App.css';
 import UserDashboard from './UserDashboard';
 import AdminDashboard from './component/AdminDashboard';
 import UserTest from './component/UserTest';
 import CreateUser from './component/CreateUserComponent'
 import { AuthProvider, useAuth } from './context/AuthContext';
+import ShipManagement from './component/ShipManagement';
 import ProtectedRoute from './component/ProtectedRoute';
 import ShipDashboard from './component/ShipDashboard';
+import Modal from 'react-modal';
 //import { useAuth, AuthProvider } from './AuthProvider';
 
 export const userContext = React.createContext();
+Modal.setAppElement('#root');
 
 const App = () => {
  
@@ -32,7 +35,6 @@ const App = () => {
     <BrowserRouter>
         <Routes>
         <Route path="/login" element={<Login />} />
-
         <Route
           element={
             <ProtectedRoute
@@ -43,6 +45,7 @@ const App = () => {
         >
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/configuration" element={<UserDashboard />} />
+          <Route path="*" element={<Dashboard />} />
         </Route>
 
         <Route
@@ -56,6 +59,8 @@ const App = () => {
           <Route path="/admin_panel" element={<AdminDashboard />}></Route>
           <Route path="/barcos" element={<ShipDashboard />}></Route>
           <Route path="/gestion_usuario" element={<CreateUser />}></Route>
+          <Route path="/gestion" element={<CreateUser />}></Route>
+          <Route path="/gestion_barcos" element={<ShipManagement />}></Route>
 
         </Route>
       </Routes>

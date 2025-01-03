@@ -1,0 +1,41 @@
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente los div hijos */
+    align-items: center;
+    margin-top: 1rem;
+    
+}
+
+.name-container {
+    display: inline-flex;
+    justify-content: center; /* Centra horizontalmente los div hijos */
+    align-items: center;
+    gap: 3rem;
+
+}
+
+.type-container {
+    display: inline-flex;
+    justify-content: center; /* Centra horizontalmente los div hijos */
+    align-items: center;
+    gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+.buttons-container {
+    margin-top: 0rem;
+}
+
+.buttons-container {
+    display: inline-flex;
+    justify-content: center; /* Centra horizontalmente los div hijos */
+    align-items: center;
+    gap: 3rem;
+}
+
+.alert-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente los div hijos */
+    align-items: center;
+}
