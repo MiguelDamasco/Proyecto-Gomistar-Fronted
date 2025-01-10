@@ -4,10 +4,13 @@ import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import ModalAddDocumentShip1 from "./modal/ModalAddDocuemntShip1";
 import ModalAddDocumentShip2 from "./modal/ModalAddDocumentShip2";
+import ModalAddDocumentShip3 from "./modal/ModalAddDocumentShip3";
 import ModalViewDocumentShip1 from "./modal/ModalViewDocumentShip1";
 import ModalViewDocumentShip2 from "./modal/ModalViewDocumentShip2";
+import ModalViewDocumentShip3 from "./modal/ModalViewDocumentShip3";
 import ModalRemoveDocumentShip1 from "./modal/ModalRemoveDocumentShip1";
 import ModalRemoveDocumentShip2 from "./modal/ModalRemoveDocumentShip2";
+import ModalRemoveDocumentShip3 from "./modal/ModalRemoveDocumentShip3";
 import "../css/NavBar.css";
 import "../css/DocumentsShip.css";
 
@@ -23,10 +26,22 @@ const ShipDocuments = () => {
     const [document6Active, setDocument6Active] = useState(false);
     const [modalDocument1Active, setmodalDocument1Active] = useState(false);
     const [modalDocument2Active, setmodalDocument2Active] = useState(false);
+    const [modalDocument3Active, setmodalDocument3Active] = useState(false);
+    const [modalDocument4Active, setmodalDocument4Active] = useState(false);
+    const [modalDocument5Active, setmodalDocument5Active] = useState(false);
+    const [modalDocument6Active, setmodalDocument6Active] = useState(false);
     const [modalViewDocument1Active, setmodalViewDocument1Active] = useState(false);
     const [modalViewDocument2Active, setmodalViewDocument2Active] = useState(false);
+    const [modalViewDocument3Active, setmodalViewDocument3Active] = useState(false)
+    const [modalViewDocument4Active, setmodalViewDocument4Active] = useState(false);
+    const [modalViewDocument5Active, setmodalViewDocument5Active] = useState(false);
+    const [modalViewDocument6Active, setmodalViewDocument6Active] = useState(false);
     const [modalRemoveDocument1Active, setmodalRemoveDocument1Active] = useState(false);
     const [modalRemoveDocument2Active, setmodalRemoveDocument2Active] = useState(false);
+    const [modalRemoveDocument3Active, setmodalRemoveDocument3Active] = useState(false);
+    const [modalRemoveDocument4Active, setmodalRemoveDocument4Active] = useState(false);
+    const [modalRemoveDocument5Active, setmodalRemoveDocument5Active] = useState(false);
+    const [modalRemoveDocument6Active, setmodalRemoveDocument6Active] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [expirationDate, setExpirationDate] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
@@ -117,14 +132,51 @@ const ShipDocuments = () => {
         setmodalDocument1Active(true);
     };
 
+    const openModal2 = () => {
+        setmodalDocument2Active(true);
+    };
+
     const closeModal2 = () => {
         setmodalDocument2Active(false);
         fetchamountDocuments();
     };
 
-    const openModal2 = () => {
-        setmodalDocument2Active(true);
+    const openModal3 = () => {
+        setmodalDocument3Active(true);
     };
+
+    const closeModal3 = () => {
+        setmodalDocument3Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModal4 = () => {
+        setmodalDocument4Active(true);
+    };
+
+    const closeModal4 = () => {
+        setmodalDocument4Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModal5 = () => {
+        setmodalDocument5Active(true);
+    };
+
+    const closeModal5 = () => {
+        setmodalDocument5Active(false);
+        fetchamountDocuments();
+    };
+    
+    const openModal6 = () => {
+        setmodalDocument6Active(true);
+    };
+
+    const closeModal6 = () => {
+        setmodalDocument6Active(false);
+        fetchamountDocuments();
+    };
+
 
     const closeModalView1 = () => {
         setmodalViewDocument1Active(false);
@@ -144,6 +196,42 @@ const ShipDocuments = () => {
         setmodalViewDocument2Active(true);
     };
 
+    const closeModalView3 = () => {
+        setmodalViewDocument3Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModalView3 = () => {
+        setmodalViewDocument3Active(true);
+    };
+
+    const closeModalView4 = () => {
+        setmodalViewDocument4Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModalView4 = () => {
+        setmodalViewDocument4Active(true);
+    };
+
+    const closeModalView5 = () => {
+        setmodalViewDocument5Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModalView5 = () => {
+        setmodalViewDocument5Active(true);
+    };
+
+    const closeModalView6 = () => {
+        setmodalViewDocument6Active(false);
+        fetchamountDocuments();
+    };
+
+    const openModalView6 = () => {
+        setmodalViewDocument6Active(true);
+    };
+
     const openModalRemove1 = () => {
         setmodalRemoveDocument1Active(true);
     }
@@ -160,6 +248,46 @@ const ShipDocuments = () => {
 
     const closeModalRemove2 = () => {
         setmodalRemoveDocument2Active(false);
+        fetchamountDocuments();
+    }
+
+    const openModalRemove3 = () => {
+        setmodalRemoveDocument3Active(true);
+    };
+    
+
+    const closeModalRemove3 = () => {
+        setmodalRemoveDocument3Active(false);
+        fetchamountDocuments();
+    }
+
+    const openModalRemove4 = () => {
+        setmodalRemoveDocument4Active(true);
+    };
+    
+
+    const closeModalRemove4 = () => {
+        setmodalRemoveDocument4Active(false);
+        fetchamountDocuments();
+    }
+
+    const openModalRemove5 = () => {
+        setmodalRemoveDocument5Active(true);
+    };
+    
+
+    const closeModalRemove5 = () => {
+        setmodalRemoveDocument5Active(false);
+        fetchamountDocuments();
+    }
+
+    const openModalRemove6 = () => {
+        setmodalRemoveDocument6Active(true);
+    };
+    
+
+    const closeModalRemove6 = () => {
+        setmodalRemoveDocument6Active(false);
         fetchamountDocuments();
     }
 
@@ -220,9 +348,9 @@ const ShipDocuments = () => {
                 <span className="text-ship">Barcos de carga</span>
             </div>
             <div className="footer-ship">
-            {document3Active && <button type="button">Ver</button>}
-            {document3Active && <button type="button">Eliminar</button>}
-            {!document3Active && <button type="button">Agregar</button>}
+            {document3Active && <button type="button" onClick={openModalView3}>Ver</button>}
+            {document3Active && <button type="button" onClick={openModalRemove3}>Eliminar</button>}
+            {!document3Active && <button type="button" onClick={openModal3}>Agregar</button>}
         </div>
         </div>
 
@@ -284,6 +412,12 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+    {modalDocument3Active && <ModalAddDocumentShip3
+                closeModal={closeModal3}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalViewDocument1Active && <ModalViewDocumentShip1
                 closeModal={closeModalView1}
                 idShip={idShip}
@@ -296,6 +430,13 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+
+    {modalViewDocument3Active && <ModalViewDocumentShip3
+                closeModal={closeModalView3}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalRemoveDocument1Active && <ModalRemoveDocumentShip1
     closeModal={closeModalRemove1}
     removeDocument={deleteDocument}
@@ -303,6 +444,12 @@ const ShipDocuments = () => {
 
     {modalRemoveDocument2Active && <ModalRemoveDocumentShip2
     closeModal={closeModalRemove2}
+    idShip={idShip}
+    token={token}
+    />}
+
+    {modalRemoveDocument3Active && <ModalRemoveDocumentShip3
+    closeModal={closeModalRemove3}
     idShip={idShip}
     token={token}
     />}
