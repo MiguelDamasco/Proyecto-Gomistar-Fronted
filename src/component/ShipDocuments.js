@@ -5,12 +5,15 @@ import axios from 'axios';
 import ModalAddDocumentShip1 from "./modal/ModalAddDocuemntShip1";
 import ModalAddDocumentShip2 from "./modal/ModalAddDocumentShip2";
 import ModalAddDocumentShip3 from "./modal/ModalAddDocumentShip3";
+import ModalAddDocumentShip4 from "./modal/ModalAddDocumentShip4";
 import ModalViewDocumentShip1 from "./modal/ModalViewDocumentShip1";
 import ModalViewDocumentShip2 from "./modal/ModalViewDocumentShip2";
 import ModalViewDocumentShip3 from "./modal/ModalViewDocumentShip3";
+import ModalViewDocumentShip4 from "./modal/ModalViewDocumentShip4";
 import ModalRemoveDocumentShip1 from "./modal/ModalRemoveDocumentShip1";
 import ModalRemoveDocumentShip2 from "./modal/ModalRemoveDocumentShip2";
 import ModalRemoveDocumentShip3 from "./modal/ModalRemoveDocumentShip3";
+import ModalRemoveDocumentShip4 from "./modal/ModalRemoveDocumentShip4";
 import "../css/NavBar.css";
 import "../css/DocumentsShip.css";
 
@@ -362,9 +365,9 @@ const ShipDocuments = () => {
                 <span className="text-ship">Barcos de carga</span>
             </div>
             <div className="footer-ship">
-            {document4Active && <button type="button">Ver</button>}
-            {document4Active && <button type="button">Eliminar</button>}
-            {!document4Active && <button type="button">Agregar</button>}
+            {document4Active && <button type="button" onClick={openModalView4}>Ver</button>}
+            {document4Active && <button type="button" onClick={openModalRemove4}>Eliminar</button>}
+            {!document4Active && <button type="button" onClick={openModal4}>Agregar</button>}
         </div>
         </div>
 
@@ -418,6 +421,13 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+    
+    {modalDocument4Active && <ModalAddDocumentShip4
+                closeModal={closeModal4}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalViewDocument1Active && <ModalViewDocumentShip1
                 closeModal={closeModalView1}
                 idShip={idShip}
@@ -437,6 +447,12 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+    {modalViewDocument4Active && <ModalViewDocumentShip4
+                closeModal={closeModalView4}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalRemoveDocument1Active && <ModalRemoveDocumentShip1
     closeModal={closeModalRemove1}
     removeDocument={deleteDocument}
@@ -450,6 +466,12 @@ const ShipDocuments = () => {
 
     {modalRemoveDocument3Active && <ModalRemoveDocumentShip3
     closeModal={closeModalRemove3}
+    idShip={idShip}
+    token={token}
+    />}
+
+    {modalRemoveDocument4Active && <ModalRemoveDocumentShip4
+    closeModal={closeModalRemove4}
     idShip={idShip}
     token={token}
     />}
