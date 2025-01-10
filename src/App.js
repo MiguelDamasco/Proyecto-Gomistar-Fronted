@@ -12,11 +12,16 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import ShipManagement from './component/ShipManagement';
 import ProtectedRoute from './component/ProtectedRoute';
 import ShipDashboard from './component/ShipDashboard';
+import EmployeeShipDashboard from './component/EmployeeShipDashboard';
+import CargoShipEmployee from './component/CargoShipEmployee';
+import PassengerShipEmployee from './component/PassengerShipEmployee';
+import DocumentShipManagement from './component/DocumentShipManagement';
+import ShipDocuments from './component/ShipDocuments';
 import Modal from 'react-modal';
 //import { useAuth, AuthProvider } from './AuthProvider';
 
 export const userContext = React.createContext();
-Modal.setAppElement('#root');
+
 
 const App = () => {
  
@@ -61,6 +66,11 @@ const App = () => {
           <Route path="/gestion_usuario" element={<CreateUser />}></Route>
           <Route path="/gestion" element={<CreateUser />}></Route>
           <Route path="/gestion_barcos" element={<ShipManagement />}></Route>
+          <Route path="/gestion_tripulantes" element={<EmployeeShipDashboard />}></Route>
+          <Route path="/barco_carga_tripulantes" element={<CargoShipEmployee />}></Route>
+          <Route path="/barco_pasajeros_tripulantes" element={<PassengerShipEmployee />}></Route>
+          <Route path="/documentos_embarcación" element={<DocumentShipManagement />}></Route>
+          <Route path="/documentos_barco" element={<ShipDocuments />}></Route>
 
         </Route>
       </Routes>

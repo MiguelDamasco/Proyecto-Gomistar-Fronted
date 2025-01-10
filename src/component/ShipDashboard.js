@@ -23,28 +23,32 @@ const ShipDashboard = () => {
       <div class="card">
         <Link to="/gestion_barcos">
         <div className="image-container">
-          <img className="image-ship" src="https://cdn5.dibujos.net/dibujos/pintar/una-lancha_2.png"></img>
+          <img className="image-ship" src="https://www.pikpng.com/pngl/b/57-575354_png-file-svg-ancla-de-barco-png-clipart.png"></img>
         </div>
         <div className="text-container">
-          <span className="text-ship">Lanchas de transporte</span>
+          <span className="text-ship">Gestión de embarcación</span>
         </div>
         </Link>
       </div>
       <div class="card">
+        <Link to="/gestion_tripulantes">
         <div className="image-container">
-            <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
+            <img className="image-ship" src="https://cdn-icons-png.flaticon.com/512/1470/1470561.png"></img>
           </div>
           <div className="text-container">
-            <span className="text-ship">Barcos de carga</span>
+            <span className="text-ship">Gestión de tripulantes</span>
           </div>
+        </Link> 
         </div>
         <div class="card">
+          <Link to="/documentos_embarcación">
         <div className="image-container">
-            <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
+            <img className="image-ship" src="https://cdn5.dibujos.net/dibujos/pintar/carpeta-portanotas.png"></img>
           </div>
           <div className="text-container">
-            <span className="text-ship">Barcos de carga</span>
+            <span className="text-ship">Gestión de documentos</span>
           </div>
+          </Link>
         </div>
         
     </div>

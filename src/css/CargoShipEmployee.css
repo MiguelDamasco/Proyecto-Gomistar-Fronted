@@ -1,0 +1,26 @@
+.selector-container {
+    display: flex;
+    flex-direction: column; /* Coloca los elementos uno debajo del otro */
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
+    margin-top: 3rem;
+  }
+  
+  .title-container {
+    margin-bottom: 20px; /* Espacio entre el título y el contenido */
+  }
+  
+  .content-container {
+    display: flex;
+    gap: 3rem;
+  }
+  
+  label {
+    margin-bottom: 10px; /* Espacio entre el label y el select */
+  }
+  
+  select {
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  

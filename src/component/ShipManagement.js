@@ -314,16 +314,25 @@ const ShipManagement = () => {
                     </input>
                 </div>
                 <div className="type-container">
-                    <label>Tipo</label>
-                    <select onChange={(e) => setType(e.target.value)}>
-                        <option value="Cargo">Carga</option>
-                        <option value="Passenger">Pasajeros</option>
-                    </select>
-                </div>
+    <label>Tipo</label>
+    <select 
+        value={type} // Vincula el valor seleccionado al estado
+        onChange={(e) => setType(e.target.value)} // Actualiza el estado cuando cambia la selección
+    >
+        <option value="" disabled>
+            Seleccione una opción
+        </option>
+        <option value="Cargo">Carga</option>
+        <option value="Passenger">Pasajeros</option>
+    </select>
+</div>
                 {type === "Cargo" && (
                     <div className="load-container">
                         <label>Carga</label>
                         <select onChange={handleLoadTypeChange} value={selectedLoadType}>
+                                <option value="" disabled>
+                                    Seleccione una opción
+                                </option>
                             {loadTypes.map((load) => (
                                 <option key={load.id} value={load.id}>
                                     {load.name}

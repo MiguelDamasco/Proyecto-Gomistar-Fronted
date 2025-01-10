@@ -1,0 +1,19 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap; /* Permitir que las cartas se muevan a nuevas filas */
+    gap: 20px; /* Espaciado entre las cartas */
+    justify-content: space-between; /* Distribuir uniformemente */
+    padding: 20px;
+  }
+  
+  .card {
+    flex: 1 1 calc(33.33% - 20px); /* 33.33% del ancho menos el espacio */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
