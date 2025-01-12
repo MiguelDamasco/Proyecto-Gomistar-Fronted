@@ -28,7 +28,7 @@ const ModalRemoveDocumentShip2 = ({closeModal, idShip, token}) => {
                 "http://localhost:8115/certificate_navigability/delete_document",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdShip: idShip },
+                    params: { pIdShip: idShip, pType: "2" },
                 }
             );
     
