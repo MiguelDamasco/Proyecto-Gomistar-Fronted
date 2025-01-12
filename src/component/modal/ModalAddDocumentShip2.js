@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ModalAddDocumentShip2 = ({ closeModal, idShip, token }) => {
     const [expirationDate, setExpirationDate] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [dots, setDots] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
+
+    useEffect(() => {
+            const interval = setInterval(() => {
+                setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
+            }, 400); // Cambia cada 500ms
+        
+            return () => clearInterval(interval); // Limpia el intervalo al desmontar
+        }, []);
 
 
     const validateForm = () => {
@@ -35,6 +46,7 @@ const ModalAddDocumentShip2 = ({ closeModal, idShip, token }) => {
 
     const handleSubmit = async () => {
         if (validateForm()) {
+            setLoading(true);
             setExpirationDate(adjustDateToGMTMinus0300(expirationDate));
             console.log("nueva fecha: " + expirationDate);
             console.log('Formulario enviado con éxito');
@@ -54,12 +66,15 @@ const ModalAddDocumentShip2 = ({ closeModal, idShip, token }) => {
 
                 if (response.status === 200) {
                     console.log('Documento agregado con éxito');
-                    closeModal();
                 } else {
                     console.error('Error al agregar el documento');
                 }
             } catch (error) {
                 console.error('Error al enviar el formulario:', error);
+            }
+            finally {
+                closeModal();
+                setLoading(false);
             }
         }
     };
@@ -90,6 +105,7 @@ const ModalAddDocumentShip2 = ({ closeModal, idShip, token }) => {
                     <h1>Agregar Documento</h1>
                 </div>
                 <div className="body-container">
+                {!loading && <div className="body-container">
                     <input type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
                     <input
                         type="date"
@@ -97,10 +113,14 @@ const ModalAddDocumentShip2 = ({ closeModal, idShip, token }) => {
                         onChange={(e) => setExpirationDate(e.target.value)}
                     />
                     {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                </div> }
+                {loading && <div className="body-container">
+                    <p>Creando{dots}</p>
+                </div> }
                 </div>
                 <div className="footer-container">
-                    <button onClick={closeModal}>Cancelar</button>
-                    <button type="button" onClick={handleSubmit}>Agregar</button>
+                    <button onClick={closeModal} disabled={loading}>Cancelar</button>
+                    <button type="button" onClick={handleSubmit} disabled={loading}>Agregar</button>
                 </div>
             </div>
         </div>

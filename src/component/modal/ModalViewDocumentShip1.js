@@ -5,6 +5,16 @@ const ModalViewDocumentShip1 = ({ closeModal, idShip, token }) => {
 
     const [expirationDate, setExpirationDate] = useState('');
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [dots, setDots] = useState('');
+        
+    useEffect(() => {
+            const interval = setInterval(() => {
+                    setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
+                }, 400); // Cambia cada 500ms
+                        
+                return () => clearInterval(interval); // Limpia el intervalo al desmontar
+            }, []);
 
     useEffect(() => {
         const fetchDocument = async () => {
@@ -30,6 +40,7 @@ const ModalViewDocumentShip1 = ({ closeModal, idShip, token }) => {
 
     const downloadDocument = async () => {
         try {
+            setLoading(true);
             // Solicitar al backend para obtener la URL prefirmada
             const response = await axios.get('http://localhost:8115/boat_registration/download_image', {
                 params: { pIdShip: idShip },
@@ -52,6 +63,8 @@ const ModalViewDocumentShip1 = ({ closeModal, idShip, token }) => {
             document.body.removeChild(link); // Eliminar el enlace después de usarlo
         } catch (err) {
             console.error('Error al descargar el documento:', err);
+        } finally {
+            setLoading(false);
         }
     };
     
@@ -65,13 +78,18 @@ const ModalViewDocumentShip1 = ({ closeModal, idShip, token }) => {
                 <div className="title-container">
                     <h1>Mi Documento</h1>
                 </div>
-                <div className="body-container">
+                {!loading && <div className="body-container">
                     <img src={image} alt="Documento" style={{ maxWidth: '100%' }}></img>
-                    <p>Fecha de vencimiento: {expirationDate}</p>
-                </div>
+                    <hr></hr>
+                    <p>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
+                </div> }
+
+                {loading && <div className="body-container">
+                    <p>Cargando{dots}</p>
+                </div> }
                 <div className="footer-container">
-                    <button onClick={closeModal}>Cancelar</button>
-                    <button type="button" onClick={downloadDocument}>Descargar</button>
+                    <button onClick={closeModal} disabled={loading}>Cancelar</button>
+                    <button type="button" onClick={downloadDocument} disabled={loading}>Descargar</button>
                 </div>
             </div>
         </div>

@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import axios from 'axios';
 
-const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
+const ModalRemoveDocumentShip5 = ({closeModal, idShip, token}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
-
-
-     useEffect(() => {
-                    const interval = setInterval(() => {
-                        setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
-                    }, 400); // Cambia cada 500ms
-                
-                    return () => clearInterval(interval); // Limpia el intervalo al desmontar
-                }, []);
+    
+    useEffect(() => {
+            const interval = setInterval(() => {
+                    setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
+                }, 400); // Cambia cada 500ms
+                    
+                return () => clearInterval(interval); // Limpia el intervalo al desmontar
+            }, []);
 
     const deleteDocument = async () => {
         if (!idShip || !token) {
@@ -26,7 +25,7 @@ const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
         try {
             // Realizar la solicitud DELETE al endpoint
             const response = await axios.delete(
-                "http://localhost:8115/technical_inspection/delete_document",
+                "http://localhost:8115/radio_communications/delete_document",
                 {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { pIdShip: idShip },
@@ -41,8 +40,8 @@ const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
         } catch (error) {
             console.error('Error al intentar eliminar el documento:', error);
         } finally {
-            setLoading(false);
             closeModal();
+            setLoading(false);
         }
     };
 
@@ -57,7 +56,7 @@ const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
                     <h1>Remover documento</h1>
                 </div>
                 <div className="body-container">
-                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>certificado de inspección técnica</strong>?</p> }
+                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>Licencia de estación radioeléctrica</strong>?</p> }
                     {loading && <p>Eliminado{dots}</p>}
                 </div>
                 <div className="footer-container">
@@ -69,4 +68,4 @@ const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
     );
 }
 
-export default ModalRemoveDocumentShip3;
+export default ModalRemoveDocumentShip5;

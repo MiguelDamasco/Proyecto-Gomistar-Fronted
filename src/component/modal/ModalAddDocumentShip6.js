@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ModalAddDocumentShip3 = ({ closeModal, idShip, token }) => {
+const ModalAddDocumentShip6 = ({ closeModal, idShip, token }) => {
     const [expirationDate, setExpirationDate] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -54,7 +54,7 @@ const ModalAddDocumentShip3 = ({ closeModal, idShip, token }) => {
             formData.append('pIdShip', idShip);  // El id del barco
             formData.append('pFile', selectedFile);  // El archivo
             formData.append('pExpirationDate', expirationDate);  // La fecha de expiración
-            formData.append('pDocumentNumber', "3"); 
+            formData.append('pDocumentNumber', "6"); 
 
             try {
                 const response = await axios.post('http://localhost:8115/ship/add_document', formData, {
@@ -127,4 +127,4 @@ const ModalAddDocumentShip3 = ({ closeModal, idShip, token }) => {
     );
 };
 
-export default ModalAddDocumentShip3;
+export default ModalAddDocumentShip6;

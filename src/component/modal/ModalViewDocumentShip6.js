@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ModalViewDocumentShip4 = ({ closeModal, idShip, token }) => {
+const ModalViewDocumentShip6 = ({ closeModal, idShip, token }) => {
 
     const [expirationDate, setExpirationDate] = useState('');
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
+
 
     useEffect(() => {
             const interval = setInterval(() => {
@@ -20,7 +21,7 @@ const ModalViewDocumentShip4 = ({ closeModal, idShip, token }) => {
         const fetchDocument = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:8115/mandatory_insurance/get_document', {
+                const response = await axios.get('http://localhost:8115/minimum_security_equipment/get_document', {
                     params: { pIdShip: idShip },
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -44,7 +45,7 @@ const ModalViewDocumentShip4 = ({ closeModal, idShip, token }) => {
     const downloadDocument = async () => {
         try {
             // Solicitar al backend para obtener la URL prefirmada
-            const response = await axios.get('http://localhost:8115/mandatory_insurance/download_image', {
+            const response = await axios.get('http://localhost:8115/minimum_security_equipment/download_image', {
                 params: { pIdShip: idShip },
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -98,4 +99,4 @@ const ModalViewDocumentShip4 = ({ closeModal, idShip, token }) => {
     );
 }
 
-export default ModalViewDocumentShip4;
+export default ModalViewDocumentShip6;

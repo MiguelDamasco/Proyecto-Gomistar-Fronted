@@ -6,14 +6,20 @@ import ModalAddDocumentShip1 from "./modal/ModalAddDocuemntShip1";
 import ModalAddDocumentShip2 from "./modal/ModalAddDocumentShip2";
 import ModalAddDocumentShip3 from "./modal/ModalAddDocumentShip3";
 import ModalAddDocumentShip4 from "./modal/ModalAddDocumentShip4";
+import ModalAddDocumentShip5 from "./modal/ModalAddDocumentShip5";
+import ModalAddDocumentShip6 from "./modal/ModalAddDocumentShip6";
 import ModalViewDocumentShip1 from "./modal/ModalViewDocumentShip1";
 import ModalViewDocumentShip2 from "./modal/ModalViewDocumentShip2";
 import ModalViewDocumentShip3 from "./modal/ModalViewDocumentShip3";
 import ModalViewDocumentShip4 from "./modal/ModalViewDocumentShip4";
+import ModalViewDocumentShip5 from "./modal/ModalViewDocumentShip5";
+import ModalViewDocumentShip6 from "./modal/ModalViewDocumentShip6";
 import ModalRemoveDocumentShip1 from "./modal/ModalRemoveDocumentShip1";
 import ModalRemoveDocumentShip2 from "./modal/ModalRemoveDocumentShip2";
 import ModalRemoveDocumentShip3 from "./modal/ModalRemoveDocumentShip3";
 import ModalRemoveDocumentShip4 from "./modal/ModalRemoveDocumentShip4";
+import ModalRemoveDocumentShip5 from "./modal/ModalRemoveDocumentShip5";
+import ModalRemoveDocumentShip6 from "./modal/ModalRemoveDocumentShip6";
 import "../css/NavBar.css";
 import "../css/DocumentsShip.css";
 
@@ -379,9 +385,9 @@ const ShipDocuments = () => {
                 <span className="text-ship">Barcos de carga</span>
             </div>
             <div className="footer-ship">
-            {document5Active && <button type="button">Ver</button>}
-            {document5Active && <button type="button">Eliminar</button>}
-            {!document5Active && <button type="button">Agregar</button>}
+            {document5Active && <button type="button" onClick={openModalView5}>Ver</button>}
+            {document5Active && <button type="button" onClick={openModalRemove5}>Eliminar</button>}
+            {!document5Active && <button type="button" onClick={openModal5}>Agregar</button>}
         </div>
         </div>
 
@@ -393,9 +399,9 @@ const ShipDocuments = () => {
                 <span className="text-ship">Barcos de carga</span>
             </div>
             <div className="footer-ship">
-            {document6Active && <button type="button">Ver</button>}
-            {document6Active && <button type="button">Eliminar</button>}
-            {!document6Active && <button type="button">Agregar</button>}
+            {document6Active && <button type="button" onClick={openModalView6}>Ver</button>}
+            {document6Active && <button type="button" onClick={openModalRemove6}>Eliminar</button>}
+            {!document6Active && <button type="button" onClick={openModal6}>Agregar</button>}
         </div>
         </div>
 
@@ -428,6 +434,18 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+    {modalDocument5Active && <ModalAddDocumentShip5
+                closeModal={closeModal5}
+                idShip={idShip}
+                token={token}
+            />}
+
+    {modalDocument6Active && <ModalAddDocumentShip6
+                closeModal={closeModal6}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalViewDocument1Active && <ModalViewDocumentShip1
                 closeModal={closeModalView1}
                 idShip={idShip}
@@ -453,6 +471,18 @@ const ShipDocuments = () => {
                 token={token}
             />}
 
+    {modalViewDocument5Active && <ModalViewDocumentShip5
+                closeModal={closeModalView5}
+                idShip={idShip}
+                token={token}
+            />}
+
+    {modalViewDocument6Active && <ModalViewDocumentShip6
+                closeModal={closeModalView6}
+                idShip={idShip}
+                token={token}
+            />}
+
     {modalRemoveDocument1Active && <ModalRemoveDocumentShip1
     closeModal={closeModalRemove1}
     removeDocument={deleteDocument}
@@ -472,6 +502,18 @@ const ShipDocuments = () => {
 
     {modalRemoveDocument4Active && <ModalRemoveDocumentShip4
     closeModal={closeModalRemove4}
+    idShip={idShip}
+    token={token}
+    />}
+
+    {modalRemoveDocument5Active && <ModalRemoveDocumentShip5
+    closeModal={closeModalRemove5}
+    idShip={idShip}
+    token={token}
+    />}
+
+    {modalRemoveDocument6Active && <ModalRemoveDocumentShip6
+    closeModal={closeModalRemove6}
     idShip={idShip}
     token={token}
     />}
