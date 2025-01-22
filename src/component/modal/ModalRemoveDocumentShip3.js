@@ -29,7 +29,7 @@ const ModalRemoveDocumentShip3 = ({closeModal, idShip, token}) => {
                 "http://localhost:8115/technical_inspection/delete_document",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdShip: idShip },
+                    params: { pIdShip: idShip, pType: "3" },
                 }
             );
     

@@ -18,6 +18,8 @@ import PassengerShipEmployee from './component/PassengerShipEmployee';
 import DocumentShipManagement from './component/DocumentShipManagement';
 import ShipDocuments from './component/ShipDocuments';
 import Modal from 'react-modal';
+import UserDocument from './component/users/UserDocument';
+import DocumentsByUserComponent from './component/users/DocumentsByUser';
 //import { useAuth, AuthProvider } from './AuthProvider';
 
 export const userContext = React.createContext();
@@ -71,6 +73,8 @@ const App = () => {
           <Route path="/barco_pasajeros_tripulantes" element={<PassengerShipEmployee />}></Route>
           <Route path="/documentos_embarcación" element={<DocumentShipManagement />}></Route>
           <Route path="/documentos_barco" element={<ShipDocuments />}></Route>
+          <Route path="/documentos_usuario_admin" element={<UserDocument />}></Route>
+          <Route path="/documentos_por_usuario" element={<DocumentsByUserComponent />}></Route>
 
         </Route>
       </Routes>

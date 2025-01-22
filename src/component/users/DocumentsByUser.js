@@ -1,82 +1,106 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "./NavBarComponent";
+import NavBar from "./../NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
-import ModalAddDocumentShip1 from "./modal/ModalAddDocuemntShip1";
-import ModalAddDocumentShip2 from "./modal/ModalAddDocumentShip2";
-import ModalAddDocumentShip3 from "./modal/ModalAddDocumentShip3";
-import ModalAddDocumentShip4 from "./modal/ModalAddDocumentShip4";
-import ModalAddDocumentShip5 from "./modal/ModalAddDocumentShip5";
-import ModalAddDocumentShip6 from "./modal/ModalAddDocumentShip6";
-import ModalViewDocumentShip1 from "./modal/ModalViewDocumentShip1";
-import ModalViewDocumentShip2 from "./modal/ModalViewDocumentShip2";
-import ModalViewDocumentShip3 from "./modal/ModalViewDocumentShip3";
-import ModalViewDocumentShip4 from "./modal/ModalViewDocumentShip4";
-import ModalViewDocumentShip5 from "./modal/ModalViewDocumentShip5";
-import ModalViewDocumentShip6 from "./modal/ModalViewDocumentShip6";
-import ModalRemoveDocumentShip1 from "./modal/ModalRemoveDocumentShip1";
-import ModalRemoveDocumentShip2 from "./modal/ModalRemoveDocumentShip2";
-import ModalRemoveDocumentShip3 from "./modal/ModalRemoveDocumentShip3";
-import ModalRemoveDocumentShip4 from "./modal/ModalRemoveDocumentShip4";
-import ModalRemoveDocumentShip5 from "./modal/ModalRemoveDocumentShip5";
-import ModalRemoveDocumentShip6 from "./modal/ModalRemoveDocumentShip6";
-import "../css/NavBar.css";
-import "../css/DocumentsShip.css";
+import ModalAddDocument1 from "./modal/ModalAddDocument1";
+import ModalViewDocument1 from "./modal/ModalViewDocument1";
+import ModalRemoveDocument1 from "./modal/ModalRemoveDocument1";
+import ModalAddDocument2 from "./modal/ModalAddDocument2";
+import ModalViewDocument2 from "./modal/ModalViewDocument2";
+import ModalRemoveDocument2 from "./modal/ModalRemoveDocument2";
+import ModalAddDocument3 from "./modal/ModalAddDocument3";
+import ModalViewDocument3 from "./modal/ModalViewDocument3";
+import ModalRemoveDocument3 from "./modal/ModalRemoveDocument3";
+import ModalAddDocument4 from "./modal/ModalAddDocument4";
+import ModalViewDocument4 from "./modal/ModalViewDocument4";
+import ModalRemoveDocument4 from "./modal/ModalRemoveDocument4";
+import "../../css/NavBar.css";
+import "../../css/DocumentsShip.css";
 
 
-const ShipDocuments = () => {
+const DocumentsByUserComponent = () => {
 
     const [amountDocuments, setAmounDocuments] = useState([]);
     const [document1Active, setDocument1Active] = useState(false);
     const [document2Active, setDocument2Active] = useState(false);
     const [document3Active, setDocument3Active] = useState(false);
     const [document4Active, setDocument4Active] = useState(false);
-    const [document5Active, setDocument5Active] = useState(false);
-    const [document6Active, setDocument6Active] = useState(false);
     const [modalDocument1Active, setmodalDocument1Active] = useState(false);
     const [modalDocument2Active, setmodalDocument2Active] = useState(false);
     const [modalDocument3Active, setmodalDocument3Active] = useState(false);
     const [modalDocument4Active, setmodalDocument4Active] = useState(false);
-    const [modalDocument5Active, setmodalDocument5Active] = useState(false);
-    const [modalDocument6Active, setmodalDocument6Active] = useState(false);
     const [modalViewDocument1Active, setmodalViewDocument1Active] = useState(false);
     const [modalViewDocument2Active, setmodalViewDocument2Active] = useState(false);
     const [modalViewDocument3Active, setmodalViewDocument3Active] = useState(false)
-    const [modalViewDocument4Active, setmodalViewDocument4Active] = useState(false);
-    const [modalViewDocument5Active, setmodalViewDocument5Active] = useState(false);
-    const [modalViewDocument6Active, setmodalViewDocument6Active] = useState(false);
+    const [modalViewDocument4Active, setmodalViewDocument4Active] = useState(false)
     const [modalRemoveDocument1Active, setmodalRemoveDocument1Active] = useState(false);
     const [modalRemoveDocument2Active, setmodalRemoveDocument2Active] = useState(false);
     const [modalRemoveDocument3Active, setmodalRemoveDocument3Active] = useState(false);
     const [modalRemoveDocument4Active, setmodalRemoveDocument4Active] = useState(false);
-    const [modalRemoveDocument5Active, setmodalRemoveDocument5Active] = useState(false);
-    const [modalRemoveDocument6Active, setmodalRemoveDocument6Active] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [expirationDate, setExpirationDate] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
     const username = localStorage.getItem('username');
-    const idShip = localStorage.getItem('idShip');
+    const idUser = localStorage.getItem('idUser');
     const token = localStorage.getItem('token');
+    let imageIdentityCard = localStorage.getItem('identity_card') || '';
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         // Obtener tipos de carga desde la API
 
         fetchamountDocuments();
-    }, [token, idShip]);
+        //getImageIdentityCard();
+        console.log("mi idUser: " + idUser);
+    }, [token, idUser]);
 
-    const fetchamountDocuments = async () => {
 
-        if (!idShip || !token) {
-            console.error('Faltan valores requeridos (idShip o token)');
+    useEffect(() => {
+
+        fetchImageIdentityCard();
+    }, [token, idUser]);
+
+
+    const fetchImageIdentityCard = async () => {
+        if (!idUser || !token) {
+            console.error('Faltan valores requeridos (idUser o token)');
             return;
         }
 
         try {
             const response = await axios.get(
-                "http://localhost:8115/ship/amount_documents",
+                "http://localhost:8115/identity_card/image",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pId: idShip },
+                    params: { pIdUser: idUser },
+                }
+            );
+
+            if (response.data.value != null) {
+                localStorage.setItem('identity_card', response.data.value);
+            }
+            console.log("Informacion: " + response.data.value);
+        } catch (error) {
+            console.error('Error al obtener la imagen:', error);
+        }
+    };
+    
+
+
+    const fetchamountDocuments = async () => {
+
+        if (!idUser || !token) {
+            console.error('Faltan valores requeridos (idUser o token)');
+            return;
+        }
+
+        try {
+            const response = await axios.get(
+                "http://localhost:8115/user/amount_documents",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { pId: idUser },
                 }
             );
             if (Array.isArray(response.data.value)) {
@@ -91,34 +115,6 @@ const ShipDocuments = () => {
         }
     };
 
-
-    const deleteDocument = async () => {
-        if (!idShip || !token) {
-            console.error('Faltan valores requeridos (idShip o token)');
-            return;
-        }
-    
-        try {
-            // Realizar la solicitud DELETE al endpoint
-            const response = await axios.delete(
-                "http://localhost:8115/boat_registration/delete_document",
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdShip: idShip },
-                }
-            );
-    
-            if (response.status === 200) {
-                console.log(response.data.message || 'Documento eliminado correctamente.');
-                closeModalRemove1();
-                fetchamountDocuments();
-            } else {
-                console.error("No se pudo eliminar el documento.");
-            }
-        } catch (error) {
-            console.error('Error al intentar eliminar el documento:', error);
-        }
-    };
     
 
     const checkDocuments = async (data) => {
@@ -127,8 +123,6 @@ const ShipDocuments = () => {
             setDocument2Active(data[1] !== null);
             setDocument3Active(data[2] !== null);
             setDocument4Active(data[3] !== null);
-            setDocument5Active(data[4] !== null);
-            setDocument6Active(data[5] !== null);
         }
     };
 
@@ -166,25 +160,10 @@ const ShipDocuments = () => {
     const closeModal4 = () => {
         setmodalDocument4Active(false);
         fetchamountDocuments();
+        localStorage.setItem('identity_card', '');
+        window.location.reload();
     };
 
-    const openModal5 = () => {
-        setmodalDocument5Active(true);
-    };
-
-    const closeModal5 = () => {
-        setmodalDocument5Active(false);
-        fetchamountDocuments();
-    };
-    
-    const openModal6 = () => {
-        setmodalDocument6Active(true);
-    };
-
-    const closeModal6 = () => {
-        setmodalDocument6Active(false);
-        fetchamountDocuments();
-    };
 
 
     const closeModalView1 = () => {
@@ -210,8 +189,8 @@ const ShipDocuments = () => {
         fetchamountDocuments();
     };
 
-    const openModalView3 = () => {
-        setmodalViewDocument3Active(true);
+    const openModalView4 = () => {
+        setmodalViewDocument4Active(true);
     };
 
     const closeModalView4 = () => {
@@ -219,26 +198,8 @@ const ShipDocuments = () => {
         fetchamountDocuments();
     };
 
-    const openModalView4 = () => {
-        setmodalViewDocument4Active(true);
-    };
-
-    const closeModalView5 = () => {
-        setmodalViewDocument5Active(false);
-        fetchamountDocuments();
-    };
-
-    const openModalView5 = () => {
-        setmodalViewDocument5Active(true);
-    };
-
-    const closeModalView6 = () => {
-        setmodalViewDocument6Active(false);
-        fetchamountDocuments();
-    };
-
-    const openModalView6 = () => {
-        setmodalViewDocument6Active(true);
+    const openModalView3 = () => {
+        setmodalViewDocument3Active(true);
     };
 
     const openModalRemove1 = () => {
@@ -278,27 +239,9 @@ const ShipDocuments = () => {
     const closeModalRemove4 = () => {
         setmodalRemoveDocument4Active(false);
         fetchamountDocuments();
+        localStorage.setItem('identity_card', '');
     }
 
-    const openModalRemove5 = () => {
-        setmodalRemoveDocument5Active(true);
-    };
-    
-
-    const closeModalRemove5 = () => {
-        setmodalRemoveDocument5Active(false);
-        fetchamountDocuments();
-    }
-
-    const openModalRemove6 = () => {
-        setmodalRemoveDocument6Active(true);
-    };
-    
-
-    const closeModalRemove6 = () => {
-        setmodalRemoveDocument6Active(false);
-        fetchamountDocuments();
-    }
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -327,7 +270,7 @@ const ShipDocuments = () => {
           <img className="image-ship" src="https://cdn5.dibujos.net/dibujos/pintar/una-lancha_2.png"></img>
         </div>
         <div className="text-container">
-          <span className="text-ship">Lanchas de transporte</span>
+          <span className="text-ship">Carnet de salud</span>
         </div>
         <div className="footer-ship">
             {document1Active && <button type="button" onClick={openModalView1}>Ver</button>}
@@ -340,7 +283,7 @@ const ShipDocuments = () => {
                 <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
             </div>
             <div className="text-container">
-                <span className="text-ship">Barcos de carga</span>
+                <span className="text-ship">Habilitaciones</span>
             </div>
             <div className="footer-ship">
             {document2Active && <button type="button" onClick={openModalView2}>Ver</button>}
@@ -354,7 +297,7 @@ const ShipDocuments = () => {
                 <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
             </div>
             <div className="text-container">
-                <span className="text-ship">Barcos de carga</span>
+                <span className="text-ship">Vacuna tetano</span>
             </div>
             <div className="footer-ship">
             {document3Active && <button type="button" onClick={openModalView3}>Ver</button>}
@@ -365,161 +308,95 @@ const ShipDocuments = () => {
 
         <div class="card">
             <div className="image-container">
-                <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
+                <img className="image-ship" src={imageIdentityCard || "https://www.shutterstock.com/image-vector/black-icon-persons-identity-document-600nw-2438171283.jpg"}></img>
             </div>
             <div className="text-container">
-                <span className="text-ship">Barcos de carga</span>
+                <span className="text-ship">Cedula Identidad</span>
             </div>
             <div className="footer-ship">
             {document4Active && <button type="button" onClick={openModalView4}>Ver</button>}
             {document4Active && <button type="button" onClick={openModalRemove4}>Eliminar</button>}
             {!document4Active && <button type="button" onClick={openModal4}>Agregar</button>}
         </div>
-        </div>
-
-        <div class="card">
-            <div className="image-container">
-                <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
-            </div>
-            <div className="text-container">
-                <span className="text-ship">Barcos de carga</span>
-            </div>
-            <div className="footer-ship">
-            {document5Active && <button type="button" onClick={openModalView5}>Ver</button>}
-            {document5Active && <button type="button" onClick={openModalRemove5}>Eliminar</button>}
-            {!document5Active && <button type="button" onClick={openModal5}>Agregar</button>}
-        </div>
-        </div>
-
-        <div class="card">
-            <div className="image-container">
-                <img className="image-ship" src="https://images.vexels.com/content/166188/preview/cargo-ship-line-3c57c2.png"></img>
-            </div>
-            <div className="text-container">
-                <span className="text-ship">Barcos de carga</span>
-            </div>
-            <div className="footer-ship">
-            {document6Active && <button type="button" onClick={openModalView6}>Ver</button>}
-            {document6Active && <button type="button" onClick={openModalRemove6}>Eliminar</button>}
-            {!document6Active && <button type="button" onClick={openModal6}>Agregar</button>}
-        </div>
-        </div>
-
-        
+        </div>     
         
     </div>
 
-    {modalDocument1Active && <ModalAddDocumentShip1
+    {modalDocument1Active && <ModalAddDocument1
                 closeModal={closeModal}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalDocument2Active && <ModalAddDocumentShip2
+    {modalDocument2Active && <ModalAddDocument2
                 closeModal={closeModal2}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalDocument3Active && <ModalAddDocumentShip3
+    {modalDocument3Active && <ModalAddDocument3
                 closeModal={closeModal3}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    
-    {modalDocument4Active && <ModalAddDocumentShip4
+
+    {modalDocument4Active && <ModalAddDocument4
                 closeModal={closeModal4}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalDocument5Active && <ModalAddDocumentShip5
-                closeModal={closeModal5}
-                idShip={idShip}
-                token={token}
-            />}
-
-    {modalDocument6Active && <ModalAddDocumentShip6
-                closeModal={closeModal6}
-                idShip={idShip}
-                token={token}
-            />}
-
-    {modalViewDocument1Active && <ModalViewDocumentShip1
+    {modalViewDocument1Active && <ModalViewDocument1
                 closeModal={closeModalView1}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalViewDocument2Active && <ModalViewDocumentShip2
+    {modalViewDocument2Active && <ModalViewDocument2
                 closeModal={closeModalView2}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-
-    {modalViewDocument3Active && <ModalViewDocumentShip3
+    {modalViewDocument3Active && <ModalViewDocument3
                 closeModal={closeModalView3}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalViewDocument4Active && <ModalViewDocumentShip4
+    {modalViewDocument4Active && <ModalViewDocument4
                 closeModal={closeModalView4}
-                idShip={idShip}
+                idUser={idUser}
                 token={token}
             />}
 
-    {modalViewDocument5Active && <ModalViewDocumentShip5
-                closeModal={closeModalView5}
-                idShip={idShip}
-                token={token}
-            />}
-
-    {modalViewDocument6Active && <ModalViewDocumentShip6
-                closeModal={closeModalView6}
-                idShip={idShip}
-                token={token}
-            />}
-
-    {modalRemoveDocument1Active && <ModalRemoveDocumentShip1
+    {modalRemoveDocument1Active && <ModalRemoveDocument1
     closeModal={closeModalRemove1}
-    idShip={idShip}
+    idUser={idUser}
     token={token}
     />}
 
-    {modalRemoveDocument2Active && <ModalRemoveDocumentShip2
+    {modalRemoveDocument2Active && <ModalRemoveDocument2
     closeModal={closeModalRemove2}
-    idShip={idShip}
+    idUser={idUser}
     token={token}
     />}
 
-    {modalRemoveDocument3Active && <ModalRemoveDocumentShip3
+    {modalRemoveDocument3Active && <ModalRemoveDocument3
     closeModal={closeModalRemove3}
-    idShip={idShip}
+    idUser={idUser}
     token={token}
     />}
 
-    {modalRemoveDocument4Active && <ModalRemoveDocumentShip4
+    {modalRemoveDocument4Active && <ModalRemoveDocument4
     closeModal={closeModalRemove4}
-    idShip={idShip}
+    idUser={idUser}
     token={token}
     />}
 
-    {modalRemoveDocument5Active && <ModalRemoveDocumentShip5
-    closeModal={closeModalRemove5}
-    idShip={idShip}
-    token={token}
-    />}
-
-    {modalRemoveDocument6Active && <ModalRemoveDocumentShip6
-    closeModal={closeModalRemove6}
-    idShip={idShip}
-    token={token}
-    />}
     </>
     )
 }
 
-export default ShipDocuments;
+export default DocumentsByUserComponent;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveDocumentShip4 = ({closeModal, idShip, token}) => {
+const ModalRemoveDocument3 = ({closeModal, idUser, token}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
@@ -15,8 +15,8 @@ const ModalRemoveDocumentShip4 = ({closeModal, idShip, token}) => {
                 }, []);
     
     const deleteDocument = async () => {
-        if (!idShip || !token) {
-            console.error('Faltan valores requeridos (idShip o token)');
+        if (!idUser || !token) {
+            console.error('Faltan valores requeridos (idUser o token)');
             return;
         }
 
@@ -25,10 +25,10 @@ const ModalRemoveDocumentShip4 = ({closeModal, idShip, token}) => {
         try {
             // Realizar la solicitud DELETE al endpoint
             const response = await axios.delete(
-                "http://localhost:8115/mandatory_insurance/delete_document",
+                "http://localhost:8115/tetanus_vaccine_certificate/delete_document",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdShip: idShip, pType: "4" },
+                    params: { pIdUser: idUser, pType: "3" },
                 }
             );
     
@@ -56,7 +56,7 @@ const ModalRemoveDocumentShip4 = ({closeModal, idShip, token}) => {
                     <h1>Remover documento</h1>
                 </div>
                 <div className="body-container">
-                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>seguro obligatorio</strong>?</p> }
+                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>carnet de salud</strong>?</p> }
                     {loading && <p>Eliminado{dots}</p>}
                 </div>
                 <div className="footer-container">
@@ -68,4 +68,4 @@ const ModalRemoveDocumentShip4 = ({closeModal, idShip, token}) => {
     );
 } 
 
-export default ModalRemoveDocumentShip4;
+export default ModalRemoveDocument3;

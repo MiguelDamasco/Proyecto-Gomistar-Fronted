@@ -28,7 +28,7 @@ const ModalRemoveDocumentShip6 = ({closeModal, idShip, token}) => {
                 "http://localhost:8115/minimum_security_equipment/delete_document",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdShip: idShip },
+                    params: { pIdShip: idShip, pType: "6" },
                 }
             );
     

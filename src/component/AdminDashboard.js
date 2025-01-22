@@ -31,7 +31,7 @@ const AdminDashboard = () => {
       </Link>
     </div>
     <div class="card">
-      <Link to="/gestion_usuario">
+      <Link to="/documentos_usuario_admin">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8gXGxAPC35Ha1Qw2yryImpvyoMkMgV0gRZA&s" 
         style={{ height: "300px", width: "300px" }}
         alt="Imagen de empleados"/>
