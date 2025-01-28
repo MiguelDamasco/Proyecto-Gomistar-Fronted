@@ -6,15 +6,15 @@ const ModalViewDocumentShip2 = ({ closeModal, idShip, token }) => {
     const [expirationDate, setExpirationDate] = useState('');
     const [image, setImage] = useState(null);   
     const [loading, setLoading] = useState(false);
-     const [dots, setDots] = useState('');
+    const [dots, setDots] = useState('');
          
-     useEffect(() => {
-             const interval = setInterval(() => {
-                     setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
-                 }, 400); // Cambia cada 500ms
+    useEffect(() => {
+            const interval = setInterval(() => {
+                    setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
+                }, 400); // Cambia cada 500ms
                          
-                 return () => clearInterval(interval); // Limpia el intervalo al desmontar
-             }, []);   
+                return () => clearInterval(interval); // Limpia el intervalo al desmontar
+            }, []);   
 
     useEffect(() => {
         const fetchDocument = async () => {

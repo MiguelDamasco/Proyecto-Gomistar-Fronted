@@ -240,6 +240,7 @@ const UserDocument = () => {
         responsive
         striped
         highlightOnHover
+        noDataComponent={<div style={{ textAlign: 'center', padding: '10px' }}>No hay información que mostrar</div>}
       />
     </>
   );

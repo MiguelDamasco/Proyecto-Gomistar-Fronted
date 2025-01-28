@@ -37,6 +37,7 @@ const Login = () => {
       const myUsername = response.data.username;
       localStorage.setItem('token', token);
       localStorage.setItem('username', response.data.username);
+      localStorage.setItem('isAlertClose', "0");
       console.log("token: " + token)
       console.log("username: " + response.data.username);
 

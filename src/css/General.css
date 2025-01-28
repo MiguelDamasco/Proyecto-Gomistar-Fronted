@@ -1,0 +1,52 @@
+
+
+.main-container {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+
+  .title-container {
+    text-align: center; /* Centrar texto */
+    margin-bottom: 20px; /* Separación inferior opcional */
+  }
+  
+  .body-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    flex-direction: column; /* Apilar contenido si hay varios elementos */
+    gap: 10px; /* Espacio entre los botones u otros elementos */
+  }
+
+  .btn-edit {
+    background-color: #007bff; /* Color azul */
+    color: #ffffff; /* Color del texto */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-edit:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+  }
+  
+  .btn-delete {
+    background-color: #dc3545; /* Color rojo */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-delete:hover {
+    background-color: #a71d2a; /* Rojo más oscuro al pasar el ratón */
+  }

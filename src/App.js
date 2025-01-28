@@ -4,10 +4,8 @@ import Login from './Login';
 import Dashboard from './Dashboard';
 import PrivateRoute from './PrivateRoute';
 //import './App.css';
-import UserDashboard from './UserDashboard';
 import AdminDashboard from './component/AdminDashboard';
 import UserTest from './component/UserTest';
-import CreateUser from './component/CreateUserComponent'
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ShipManagement from './component/ShipManagement';
 import ProtectedRoute from './component/ProtectedRoute';
@@ -20,7 +18,10 @@ import ShipDocuments from './component/ShipDocuments';
 import Modal from 'react-modal';
 import UserDocument from './component/users/UserDocument';
 import DocumentsByUserComponent from './component/users/DocumentsByUser';
+import AlertAdmin from './component/alert/AlertAdmin';
+import UserDashboard from './component/users/UserDashboard';
 //import { useAuth, AuthProvider } from './AuthProvider';
+import CreateUser from './component/users/CreateUser';
 
 export const userContext = React.createContext();
 
@@ -65,8 +66,7 @@ const App = () => {
         >
           <Route path="/admin_panel" element={<AdminDashboard />}></Route>
           <Route path="/barcos" element={<ShipDashboard />}></Route>
-          <Route path="/gestion_usuario" element={<CreateUser />}></Route>
-          <Route path="/gestion" element={<CreateUser />}></Route>
+          <Route path="/usuarios" element={<CreateUser />}></Route>
           <Route path="/gestion_barcos" element={<ShipManagement />}></Route>
           <Route path="/gestion_tripulantes" element={<EmployeeShipDashboard />}></Route>
           <Route path="/barco_carga_tripulantes" element={<CargoShipEmployee />}></Route>
@@ -75,6 +75,8 @@ const App = () => {
           <Route path="/documentos_barco" element={<ShipDocuments />}></Route>
           <Route path="/documentos_usuario_admin" element={<UserDocument />}></Route>
           <Route path="/documentos_por_usuario" element={<DocumentsByUserComponent />}></Route>
+          <Route path="/alerta_admin" element={<AlertAdmin />}></Route>
+          <Route path="/gestion_usuarios" element={<UserDashboard />}></Route>
 
         </Route>
       </Routes>

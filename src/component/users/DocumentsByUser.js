@@ -16,6 +16,7 @@ import ModalViewDocument4 from "./modal/ModalViewDocument4";
 import ModalRemoveDocument4 from "./modal/ModalRemoveDocument4";
 import "../../css/NavBar.css";
 import "../../css/DocumentsShip.css";
+import "../../css/Alert.css";
 
 
 const DocumentsByUserComponent = () => {
@@ -37,12 +38,16 @@ const DocumentsByUserComponent = () => {
     const [modalRemoveDocument2Active, setmodalRemoveDocument2Active] = useState(false);
     const [modalRemoveDocument3Active, setmodalRemoveDocument3Active] = useState(false);
     const [modalRemoveDocument4Active, setmodalRemoveDocument4Active] = useState(false);
+    const [alertText, setAlertText] = useState('alerta pendiente');
     const [selectedFile, setSelectedFile] = useState(null);
     const [expirationDate, setExpirationDate] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
     const username = localStorage.getItem('username');
     const idUser = localStorage.getItem('idUser');
+    const id = localStorage.getItem('id');
     const token = localStorage.getItem('token');
+    const amountAlerts = localStorage.getItem('amount_alerts');
+    const isAlertClose = localStorage.getItem('isAlertClose');
     let imageIdentityCard = localStorage.getItem('identity_card') || '';
     const navigate = useNavigate();
 
@@ -58,9 +63,40 @@ const DocumentsByUserComponent = () => {
 
     useEffect(() => {
 
+        fetchAmountAlerts();
         fetchImageIdentityCard();
+        checkText();
     }, [token, idUser]);
 
+    const fetchAmountAlerts = async () => {
+        if (!idUser || !token) {
+            console.error('Faltan valores requeridos (idUser o token)');
+            return;
+        }
+    
+        try {
+            const response = await axios.get(
+                "http://localhost:8115/user/amount_alerts",
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { pId: id },
+                }
+            );
+    
+            localStorage.setItem('amount_alerts', response.data.value);
+        } catch (error) {
+            console.error('Error al obtener la cantidad de alertas:', error);
+            localStorage.clear();
+            navigate("/login");
+        }
+    };
+    
+    const checkText = () => {
+
+        if(Number(amountAlerts) > 1) {
+            setAlertText('alertas pendientes');
+        }
+    }
 
     const fetchImageIdentityCard = async () => {
         if (!idUser || !token) {
@@ -129,6 +165,7 @@ const DocumentsByUserComponent = () => {
     const closeModal = () => {
         setmodalDocument1Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModal = () => {
@@ -142,6 +179,7 @@ const DocumentsByUserComponent = () => {
     const closeModal2 = () => {
         setmodalDocument2Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModal3 = () => {
@@ -151,6 +189,7 @@ const DocumentsByUserComponent = () => {
     const closeModal3 = () => {
         setmodalDocument3Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModal4 = () => {
@@ -162,6 +201,7 @@ const DocumentsByUserComponent = () => {
         fetchamountDocuments();
         localStorage.setItem('identity_card', '');
         window.location.reload();
+        fetchAmountAlerts();
     };
 
 
@@ -169,6 +209,7 @@ const DocumentsByUserComponent = () => {
     const closeModalView1 = () => {
         setmodalViewDocument1Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModalView1 = () => {
@@ -178,6 +219,7 @@ const DocumentsByUserComponent = () => {
     const closeModalView2 = () => {
         setmodalViewDocument2Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModalView2 = () => {
@@ -187,6 +229,7 @@ const DocumentsByUserComponent = () => {
     const closeModalView3 = () => {
         setmodalViewDocument3Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModalView4 = () => {
@@ -196,6 +239,7 @@ const DocumentsByUserComponent = () => {
     const closeModalView4 = () => {
         setmodalViewDocument4Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     };
 
     const openModalView3 = () => {
@@ -209,6 +253,7 @@ const DocumentsByUserComponent = () => {
     const closeModalRemove1 = () => {
         setmodalRemoveDocument1Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     }
 
     const openModalRemove2 = () => {
@@ -219,6 +264,7 @@ const DocumentsByUserComponent = () => {
     const closeModalRemove2 = () => {
         setmodalRemoveDocument2Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     }
 
     const openModalRemove3 = () => {
@@ -229,6 +275,7 @@ const DocumentsByUserComponent = () => {
     const closeModalRemove3 = () => {
         setmodalRemoveDocument3Active(false);
         fetchamountDocuments();
+        fetchAmountAlerts();
     }
 
     const openModalRemove4 = () => {
@@ -240,6 +287,12 @@ const DocumentsByUserComponent = () => {
         setmodalRemoveDocument4Active(false);
         fetchamountDocuments();
         localStorage.setItem('identity_card', '');
+        fetchAmountAlerts();
+    }
+
+    const closeAlert = () => {
+        localStorage.setItem('isAlertClose', '1');
+        navigate("/documentos_por_usuario");
     }
 
 
@@ -264,6 +317,12 @@ const DocumentsByUserComponent = () => {
       <NavLink className="active" to="#">Panel tripulantes</NavLink>
       <p className="hidden-separator">&gt;</p>
    </div>
+   {Number(amountAlerts) > 0 && isAlertClose === "0" && <div className="alert-background-container">
+    <div className="alert-container">
+        <p>Tienes {amountAlerts} {alertText}, revise su correro electrónico</p>
+        <button type="button" onClick={closeAlert}>X</button>
+    </div>
+   </div>}
     <div className="card-container">
       <div class="card">
         <div className="image-container">
