@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveAlert = ({closeModal, alertToDelete, token, alertMessage}) => {
+const DeleteUserModal = ({closeModal, token, userToDelete, deleteMessage}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
@@ -14,31 +14,31 @@ const ModalRemoveAlert = ({closeModal, alertToDelete, token, alertMessage}) => {
                     return () => clearInterval(interval); // Limpia el intervalo al desmontar
                 }, []);
     
-    const deleteAlert = async () => {
-        if (!alertToDelete || !token) {
-            console.error('Faltan valores requeridos (alertToDelete o token)');
+    const deleteUser = async () => {
+        if (!userToDelete || !token) {
+            console.error('Faltan valores requeridos (userToDelete o token)');
             return;
         }
 
         setLoading(true);
     
         try {
+    
             const response = await axios.delete(
-                "http://localhost:8115/alert/delete",
+                "http://localhost:8115/user/delete",
                 {
                     headers: { Authorization: `Bearer ${token}` },
-                    params: { pIdAlert: alertToDelete.id },
+                    params: { pIdUser: userToDelete.id },
                 }
             );
     
             if (response.status === 200) {
-                console.log(response.data.message || 'Documento eliminado correctamente.');
-                alertMessage(response.data.message);
+                deleteMessage(response.data.message);
             } else {
-                console.error("No se pudo eliminar el documento.");
+                console.error("No se pudo eliminar el Usuario.");
             }
         } catch (error) {
-            console.error('Error al intentar eliminar el documento:', error);
+            console.error('Error al intentar eliminar el Usuario:', error);
         } finally {
             closeModal();
             setLoading(false);
@@ -53,19 +53,19 @@ const ModalRemoveAlert = ({closeModal, alertToDelete, token, alertMessage}) => {
                     <button onClick={closeModal}>X</button>
                 </div>
                 <div className="title-container">
-                    <h1>Remover alerta</h1>
+                    <h1>Remover Usuario</h1>
                 </div>
                 <div className="body-container">
-                    {!loading && <p>Estas seguro que quieres eliminar la alerta <strong>{alertToDelete.type}</strong>?</p> }
+                    {!loading && <p>Estas seguro que quieres eliminar el usuario <strong>{userToDelete.username}</strong>?</p> }
                     {loading && <p>Eliminado{dots}</p>}
                 </div>
                 <div className="footer-container">
                     <button onClick={closeModal} disabled={loading}>Cancelar</button>
-                    <button onClick={deleteAlert} id="delete-btn" type="button" disabled={loading}>Eliminar</button>
+                    <button onClick={deleteUser} id="delete-btn" type="button" disabled={loading}>Eliminar</button>
                 </div>
             </div>
         </div>
     );
-}
+} 
 
-export default ModalRemoveAlert;
+export default DeleteUserModal;

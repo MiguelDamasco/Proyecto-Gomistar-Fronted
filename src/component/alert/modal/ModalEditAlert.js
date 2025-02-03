@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ModalEditAlert = ({ closeModal, alertToEdit, token }) => {
+const ModalEditAlert = ({ closeModal, alertToEdit, token, alertMessage }) => {
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
     const [today, setToday] = useState('');
@@ -52,8 +52,9 @@ const ModalEditAlert = ({ closeModal, alertToEdit, token }) => {
                 }
             );
 
-            setMessage(response.data.message); // Mostrar mensaje del servidor
-            closeModal(); // Cerrar modal después de guardar
+            setMessage(response.data.message);
+            closeModal();
+            alertMessage(response.data.message);
         } catch (error) {
             console.error(error);
             setMessage('Error al modificar la alerta. Intente nuevamente.');

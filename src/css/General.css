@@ -24,7 +24,7 @@
   }
 
   .btn-edit {
-    background-color: #007bff; /* Color azul */
+    background-color: #00c718; 
     color: #ffffff; /* Color del texto */
     border: none;
     border-radius: 5px;
@@ -34,7 +34,7 @@
   }
   
   .btn-edit:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+    background-color: greenyellow; /* Azul más oscuro al pasar el ratón */
   }
   
   .btn-delete {
@@ -50,3 +50,57 @@
   .btn-delete:hover {
     background-color: #a71d2a; /* Rojo más oscuro al pasar el ratón */
   }
+
+  #confirmed-icon {
+    color: green;
+    width: 7rem;
+    height: 7rem;
+
+  }
+
+  .navegation-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .dropdown {
+    padding-right: 2.5rem;
+  }
+
+  .navegation-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Asegura que el dropdown esté a la derecha */
+    width: 100%;
+  }
+  
+  .navegation-main-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaciado entre los elementos */
+  }
+
+.table-container {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+  #gear-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+
+/* ✅ Para móviles (pantallas pequeñas: menos de 768px) */
+@media screen and (max-width: 768px) {
+  .table-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+  
+  
+  

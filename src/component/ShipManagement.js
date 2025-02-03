@@ -1,16 +1,16 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect, useRef  } from "react";
 import NavBar from "./NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import DataTable from "react-data-table-component";
-import Modal from 'react-modal';
 import "../css/NavBar.css";
-import "../css/ShipManagement.css";
 import ModalDeleteShip from "./modal/ModalDeleteShip";
 import ModalEditShip from "./modal/ModalEditShip";
+import AlertMessage from "./alert/AlertMessage";
 import "../css/ModalDeleteShip.css";
+import "../css/Form.css";
+import "../css/General.css";
 
-//Modal.setAppElement('#root');
 
 const ShipManagement = () => {
 
@@ -24,12 +24,15 @@ const ShipManagement = () => {
     const [modalIsOpenEdit, setModalIsOpenEdit] = useState(false);
     const [shipToDelete, setShipToDelete] = useState(null);
     const [shipToEdit, setShipToEdit] = useState(null);
+    const [emailRoute, setEmailRoute] = useState('/confirmar_email');
+    const [alert, setAlert] = useState(false);
+    const isConfirmed = localStorage.getItem('email_confirm');
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
+    const tableRef = useRef(null);
 
 
     useEffect(() => {
-        // Función para obtener datos de la API
         const fetchLoadType = async () => {
             try {
                 const response = await axios.get(
@@ -40,28 +43,22 @@ const ShipManagement = () => {
                       },
                     }
                   );
-                setLoadTypes(response.data.value); // Suponiendo que el backend devuelve un array de barcos
+                setLoadTypes(response.data.value);
             } catch (error) {
                 console.error('Error al obtener los barcos:', error);
             }
         };
 
         fetchLoadType();
-        console.log("Cargas: " + loadTypes);
     }, []);
 
     useEffect(() => {
+
+      if(isConfirmed === "1") {
+        setEmailRoute("/confirmado");
+      }
         fetchShips();
       }, []);
-
-
-    
-      useEffect(() => {
-        if (message) {
-          const timeout = setTimeout(() => setMessage(''), 5000); // Ocultar después de 5 segundos
-          return () => clearTimeout(timeout);
-        }
-      }, [message]);
       
 
       const fetchShips = async () => {
@@ -126,7 +123,7 @@ const ShipManagement = () => {
               <button
                 className="btn btn-edit"
                 onClick={(e) => {
-                    e.stopPropagation(); // Detener la propagación del evento
+                    e.stopPropagation();
                     openModalEdit(row);
                   }}
                 style={{ marginRight: "5px" }}
@@ -138,7 +135,7 @@ const ShipManagement = () => {
               <button
                 className="btn btn-delete"
                 onClick={(e) => {
-                    e.stopPropagation(); // Detener la propagación del evento
+                    e.stopPropagation();
                     openModal(row);
                   }}
               >
@@ -152,14 +149,6 @@ const ShipManagement = () => {
         },
       ];
 
-    const handleEdit = () => {
-        console.log("Editado!");
-    }
-
-    const handleDelete = () => {
-        console.log("Eliminado!");
-
-    }
 
     const editShip = () => {
         console.log("Editado!");
@@ -177,20 +166,29 @@ const ShipManagement = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
               );
 
-              setMessage(response.data.value);
+              showSuccessMessage(response.data.message);
               fetchShips();
         }
         catch (e) {
-            console.log("error: " + e.message);
             setMessage("Error al intentar eliminar el barco!");
         }
         
-
-        console.log("Eliminado el barco!");
-        console.log(shipToDelete);
-        console.log("tipos: " + type);
         closeModal();
     };
+
+    const viewTable = () => {
+      setTimeout(() => {
+        if (tableRef.current) {
+          tableRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 250);
+    }
+
+    const showSuccessMessage = (myMessage) => {
+      setAlert({ message: myMessage, type: "success" });
+      setTimeout(() => setAlert(null), 3000); 
+
+  };
 
     const openModal = (ship) => {
         setShipToDelete(ship);
@@ -221,23 +219,22 @@ const ShipManagement = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
               );
 
-              setMessage("¡Barco de pasajeros creado exitosamente!");
+              showSuccessMessage(response.data.message);
               fetchShips();
+              viewTable();
+              clearInputName();
         }
         catch (e) {
             if (e.response && e.response.data && e.response.data.message) {
-                setMessage("Error: " + e.response.data.message);
+                setMessage("Ingrese un tipo de carga");
               } else {
                 setMessage("Error desconocido al crear el barco de pasajeros.");
               }
-              console.error("Error al crear el barco de pasajeros:", e);
         }
     }
 
     const createCargoShip = async () => {
         
-        console.log("Nombre barco de carga: " + name);
-        console.log("idCargo: " + selectedLoadType);
         try {
             const response = await axios.post(
                 'http://localhost:8115/cargoShip/create',
@@ -245,15 +242,17 @@ const ShipManagement = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
               );
 
-              setMessage("¡Barco de carga creado exitosamente!");
+              showSuccessMessage(response.data.message);
               fetchShips();
+              viewTable();
+              clearInputName();
         }
         catch (e) {
             if (e.response && e.response.data && e.response.data.message) {
-                // Si el backend envía un mensaje de error, lo capturamos
-                setMessage("Error: " + e.response.data.message);
+               
+                setMessage("Ingrese un tipo de carga.");
             } else {
-                // Si no hay mensaje del backend, mostramos un error genérico
+               
                 setMessage("Error desconocido al crear el barco de carga.");
             }
             console.error("Error al crear el barco de carga:", e);
@@ -262,6 +261,26 @@ const ShipManagement = () => {
 
     const handleLoadTypeChange = (e) => {
         setSelectedLoadType(e.target.value);
+    };
+
+
+    const handleKeyPress = (e) => {
+      const charCode = e.charCode || e.keyCode;
+      const char = String.fromCharCode(charCode);
+    
+      if (!/^[a-zA-Z\s]$/.test(char)) {
+        e.preventDefault();
+      }
+    };
+    
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      
+      setName(value);
+    };
+    
+    const clearInputName = () => {
+      setName('');
     };
 
     const verValor = (e) => {
@@ -274,60 +293,80 @@ const ShipManagement = () => {
                 break;
             case 'Cargo':
                 createCargoShip();
-                console.log("Es un barco de carga!");
                 break;
             default:
                 setMessage("Tipo no reconocido, error!");
-
         }
-
-        console.log(name);
-        console.log(type);
     }
+
+
+    const paginationOptions = {
+      rowsPerPageText: "Filas por página",
+      rangeSeparatorText: "de",
+      noRowsPerPage: false,
+      selectAllRowsItem: false,
+    };
 
     return (
         <>
         <NavBar myUser={username} ></NavBar>
-        <div className='navegation-container'>
+        <div className="navegation-container">
+         <div className="navegation-main-container">
             <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
             <p className="separator">&gt;</p>
             <NavLink className="no-active" to="/barcos">Embarcaciones</NavLink>
             <p className="separator">&gt;</p>
             <NavLink className="active" to="#">Gestión Embarcaciones</NavLink>
-            <p className="hidden-separator">&gt;</p>
+          </div>
+          <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg id="gear-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+                </svg>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><span class="dropdown-header">Configuración</span></li>
+                    <li><hr class="dropdown-divider"/></li>
+                    <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
+                    <li><a class="dropdown-item" href="#" >Something else here</a></li>
+                </ul>
+          </div>
         </div>
-        <div className="alert-container">
-            {message && (
-                <div className={`alert alert-${message.startsWith("Error") ? "danger" : "success"}`} role="alert">
-                    {message}
-                </div>
-            )}
-        </div>
-        <div className="form-container">
-            <form >
-                <div className="name-container">
+        <div className="form-main-container">
+            <form className="form-content">
+              <div className="form-title-container">
+                <h1>Gestión Embarcaciones</h1>
+              </div>
+                <div className="form-name-container">
                     <label>Nombre</label>
                     <input 
                         type="text"
-                        onChange={(e) => setName(e.target.value)}
+                        name="name"
+                        value={name}
+                        minLength={3}
+                        maxLength={25}
+                        required
+                        onChange={handleInputChange}
+                        onKeyPress={handleKeyPress}
                         >
                     </input>
                 </div>
-                <div className="type-container">
-    <label>Tipo</label>
-    <select 
-        value={type} // Vincula el valor seleccionado al estado
-        onChange={(e) => setType(e.target.value)} // Actualiza el estado cuando cambia la selección
-    >
-        <option value="" disabled>
-            Seleccione una opción
-        </option>
-        <option value="Cargo">Carga</option>
-        <option value="Passenger">Pasajeros</option>
-    </select>
-</div>
+                <div className="form-type-container">
+                    <label>Tipo</label>
+                    <select 
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        <option value="" disabled>
+                            Seleccione una opción
+                        </option>
+                        <option value="Cargo">Carga</option>
+                        <option value="Passenger">Pasajeros</option>
+                    </select>
+                </div>
                 {type === "Cargo" && (
-                    <div className="load-container">
+                    <div className="form-load-container">
                         <label>Carga</label>
                         <select onChange={handleLoadTypeChange} value={selectedLoadType}>
                                 <option value="" disabled>
@@ -341,12 +380,21 @@ const ShipManagement = () => {
                             </select>
                     </div>
                 )}
-                <div className="buttons-container">
+                <div className="form-buttons-container">
                     <button type="submit" className="btn btn-primary" onClick={(e) => verValor(e)}>Ingresar</button>
                     <p>{message}</p>
                 </div>
             </form>
         </div>
+
+        {alert && (
+        <AlertMessage
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
+
         {modalIsOpen && <ModalDeleteShip
                 closeModal={closeModal}
                 shipToDelete={shipToDelete}
@@ -359,15 +407,17 @@ const ShipManagement = () => {
                         editShip={editShip}
                         setFormMessage={setMessage}
                     />}
-        <div className="table-container">
+        <div ref={tableRef} className="table-container">
             <DataTable
-            title="Barcos"
+            title=""
             columns={columns}
             data={ships}
             pagination
             responsive
             striped
             highlightOnHover
+            noDataComponent={<div style={{ textAlign: 'center', padding: '10px' }}>No hay información que mostrar</div>}
+            paginationComponentOptions={paginationOptions}
         />
         </div>
         </>

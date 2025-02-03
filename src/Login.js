@@ -82,6 +82,24 @@ const Login = () => {
           console.warn('No se encontraron roles para el usuario.');
           alert('No se encontraron roles para el usuario.');
         }
+
+
+        const response4 = await axios.get('http://localhost:8115/user/is_comfirmed', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Agregar el token al encabezado
+          },
+          params: {
+            pIdUser: localStorage.getItem('id'), // Parámetro en la URL
+          }});
+
+          if(response4.data.value) {
+            localStorage.setItem('email_confirm', "1");
+          }
+          else {
+            localStorage.setItem('email_confirm', "0");
+          }
+          
+        localStorage.setItem('request', "0");
         //login({ token, username, id, roles });
         console.log("mi id: " + id);
         console.log("mi username: " + "willy!");

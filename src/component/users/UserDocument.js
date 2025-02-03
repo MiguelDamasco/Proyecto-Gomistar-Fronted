@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from 'react';
 import NavBar from "../NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,17 +7,15 @@ import "../../css/NavBar.css";
 import "../../css/ShipDashboard.css";
 
 
-
 const UserDocument = () => {
-  const [ships, setShips] = useState([]); // Estado para almacenar la lista de barcos
-  const [selectedShip, setSelectedShip] = useState(""); // Estado para el barco seleccionado
-  const [users, setUsers] = useState([]); // Estado para almacenar los usuarios obtenidos
-  const [loading, setLoading] = useState(false); // Estado de carga
+  const [ships, setShips] = useState([]);
+  const [selectedShip, setSelectedShip] = useState("");
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  // Obtener la lista de barcos
   useEffect(() => {
     const fetchShips = async () => {
       try {
@@ -26,7 +24,6 @@ const UserDocument = () => {
           return;
         }
 
-        // Llama al endpoint GET /ship/list
         const response = await axios.get("http://localhost:8115/ship/list", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,9 +40,8 @@ const UserDocument = () => {
     fetchShips();
   }, [token]);
 
-  // Manejo del cambio en el select
   const handleShipChange = async (event) => {
-    const shipId = event.target.value; // ID del barco seleccionado
+    const shipId = event.target.value; 
     setSelectedShip(shipId);
     setLoading(true);
 
@@ -107,7 +103,7 @@ const UserDocument = () => {
         sortable: true,
     },
     {
-        name: "Actions",
+        name: "Acciones",
         cell: (row) => (
           <>
 
@@ -194,7 +190,7 @@ const UserDocument = () => {
         </defs>
         </svg>
         </span>
-        <p class="text">Documents</p>
+        <p class="text">Documentos</p>
         </button>
 
                 </>
@@ -207,30 +203,40 @@ const UserDocument = () => {
     <>
       <NavBar myUser={username}></NavBar>
       <div className="navegation-container">
+        <div className="navegation-main-container">
         <NavLink className="no-active" to="/admin_panel">
           Inicio
+        </NavLink>
+        <p className="separator">&gt;</p>
+        <NavLink className="no-active" to="/gestion_usuarios">
+          Usuarios
         </NavLink>
         <p className="separator">&gt;</p>
         <NavLink className="active" to="#">
           Documentos Usuario
         </NavLink>
-        <p className="hidden-separator">&gt;</p>
+        </div>
       </div>
       <div className="main-container">
+        <div className="title-container">
+              <h1>Documentos por Usuarios</h1>
+          </div>
+        <div className="body-container">
         <select 
-          value={selectedShip} // Vincula el valor seleccionado al estado
-          onChange={handleShipChange} // Maneja el cambio de selección
+          value={selectedShip}
+          onChange={handleShipChange} 
         >
           <option value="" disabled>
             Seleccione una embarcación
           </option>
-          <option value="no-ship">Sin Asignar</option> {/* Opción fija */}
+          <option value="no-ship">Sin Asignar</option> 
           {ships.map((ship) => (
             <option key={ship.id} value={ship.id}>
-              {ship.name} {/* Asume que el backend devuelve 'id' y 'name' */}
+              {ship.name} 
             </option>
           ))}
         </select>
+        </div>
       </div>
             <DataTable
         title=""

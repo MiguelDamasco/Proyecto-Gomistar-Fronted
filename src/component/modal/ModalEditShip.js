@@ -38,7 +38,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     }, [shipToEdit]);
 
     useEffect(() => {
-        // Establecer el valor inicial de selectedLoadType
+        
         if (loadTypes.length > 0 && type === "Cargo") {
             const result = shipToEdit.typeShip.split(" ");
             if (result[1]) {
@@ -58,8 +58,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     };
 
     const handleEditShip = async () => {
-        console.log("primer tipo: " + originalType);
-        console.log("actual tipo: " + type);
+        ;
         try {
             if (type === "Passenger") {
                 if(originalType === "Passenger") {
@@ -114,16 +113,18 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     };
 
     return (
-        <div className="background-container">
-            <div className="main-container">
-                <div className="close-button">
-                    <button onClick={closeModal}>X</button>
-                </div>
-                <div className="title-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
+                
+                <div className="modal-title-container">
                     <h1>Editar barco</h1>
                 </div>
-                <div className="body-container">
-                    <div className="name-container">
+                
+                <div className="modal-body-container">
+                <div className="modal-close-button">
+                    <button onClick={closeModal}>X</button>
+                </div>
+                    <div className="modal-name-container">
                         <label>Nombre:</label>
                         <input
                             type="text"
@@ -131,7 +132,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
                             onChange={(e) => setShipName(e.target.value)}
                         />
                     </div>
-                    <div className="type-container">
+                    <div className="modal-type-container">
                         <label>Tipo:</label>
                         <select value={type} onChange={(e) => setType(e.target.value)}>
                             <option value="Cargo">Carga</option>
@@ -139,7 +140,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
                         </select>
                     </div>
                     {type === "Cargo" && (
-                        <div className="load-container">
+                        <div className="modal-load-container">
                             <label>Carga:</label>
                             <select
                                 onChange={handleLoadTypeChange}
@@ -156,11 +157,11 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
                             </select>
                         </div>
                     )}
-                    <div className="message-container">
+                    <div className="modal-message-container">
                         <p>{message}</p>
                     </div>
                 </div>
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal}>Cancelar</button>
                     <button
                         onClick={handleEditShip}

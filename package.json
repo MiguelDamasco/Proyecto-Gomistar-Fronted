@@ -9,6 +9,7 @@
     "cra-template": "1.2.0",
     "datatables.net": "^2.1.8",
     "datatables.net-dt": "^2.1.8",
+    "framer-motion": "^12.0.6",
     "jquery": "^3.7.1",
     "prueba": "file:",
     "react": "^19.0.0",

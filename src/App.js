@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate, BrowserRouter } from 
 import Login from './Login';
 import Dashboard from './Dashboard';
 import PrivateRoute from './PrivateRoute';
-//import './App.css';
 import AdminDashboard from './component/AdminDashboard';
 import UserTest from './component/UserTest';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -22,6 +21,9 @@ import AlertAdmin from './component/alert/AlertAdmin';
 import UserDashboard from './component/users/UserDashboard';
 //import { useAuth, AuthProvider } from './AuthProvider';
 import CreateUser from './component/users/CreateUser';
+import ConfirmEmail from './component/ConfirmEmail';
+import ConfirmedEmail from './component/ConifrmedEmail';
+import ChangePassword from './component/ChangePassword';
 
 export const userContext = React.createContext();
 
@@ -77,6 +79,9 @@ const App = () => {
           <Route path="/documentos_por_usuario" element={<DocumentsByUserComponent />}></Route>
           <Route path="/alerta_admin" element={<AlertAdmin />}></Route>
           <Route path="/gestion_usuarios" element={<UserDashboard />}></Route>
+          <Route path="/confirmar_email" element={<ConfirmEmail />}></Route>
+          <Route path="/confirmado" element={<ConfirmedEmail />}></Route>
+          <Route path="/cambiar_contraseña" element={<ChangePassword />}></Route>
 
         </Route>
       </Routes>
