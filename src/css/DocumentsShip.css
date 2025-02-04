@@ -1,24 +1,117 @@
-.card-container {
-    display: flex;
-    flex-wrap: wrap; /* Permitir que las cartas se muevan a nuevas filas */
-    gap: 20px; /* Espaciado entre las cartas */
-    justify-content: space-between; /* Distribuir uniformemente */
+/* Contenedor de las tarjetas */
+.card-container-document {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 15px;
     padding: 20px;
-  }
-  
-  .card {
-    flex: 1 1 calc(33.33% - 20px); /* 33.33% del ancho menos el espacio */
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Tarjetas más pequeñas */
+.card-document {
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     text-align: center;
-    font-size: 16px;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
+    transition: transform 0.2s ease-in-out;
+    width: 100%;
+    max-width: 220px; /* Tamaño más pequeño */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.card-document:hover {
+    transform: scale(1.05);
+}
+
+/* Contenedor de imagen uniforme */
+.image-container-document {
+    width: 100%;
+    height: 120px; /* Tamaño fijo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f4f4;
+}
+
+/* Imágenes de igual tamaño */
+.image-document,
+.image-document-document {
+    width: 80px;  /* Tamaño uniforme */
+    height: 80px; /* Mantiene proporción */
+    object-fit: contain;
+}
+
+/* Texto dentro de la tarjeta */
+.text-container-document {
+    padding: 8px;
+}
+
+.text-document {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Pie de tarjeta */
+.footer-document {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px;
+}
+
+/* Botones */
+.footer-document button {
+    padding: 5px 8px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.footer-document button:first-child {
+    background: #007bff;
+    color: white;
+}
+
+.footer-document button:first-child:hover {
+    background: #0056b3;
+}
+
+.footer-document button:nth-child(2) {
+    background: #dc3545;
+    color: white;
+}
+
+.footer-document button:nth-child(2):hover {
+    background: #c82333;
+}
+
+.footer-document button:last-child {
+    background: #28a745;
+    color: white;
+}
+
+.footer-document button:last-child:hover {
+    background: #218838;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .card-container-document {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .card-container-document {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
 }

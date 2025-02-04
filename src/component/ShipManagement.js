@@ -26,17 +26,23 @@ const ShipManagement = () => {
     const [shipToEdit, setShipToEdit] = useState(null);
     const [emailRoute, setEmailRoute] = useState('/confirmar_email');
     const [alert, setAlert] = useState(false);
+    const amountAlerts = localStorage.getItem('amount_alerts');
+    const isAlertClose = localStorage.getItem('isAlertClose');
+    const [alertText, setAlertText] = useState('alerta pendiente');
+    const id = localStorage.getItem('id');
     const isConfirmed = localStorage.getItem('email_confirm');
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
     const tableRef = useRef(null);
+    const navigate = useNavigate();
 
+    const myAPI = "http://localhost:8115";
 
     useEffect(() => {
         const fetchLoadType = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:8115/loadType/listAll",
+                    `${myAPI}/loadType/listAll`,
                     {
                       headers: {
                         Authorization: `Bearer ${token}`,
@@ -59,6 +65,57 @@ const ShipManagement = () => {
       }
         fetchShips();
       }, []);
+
+
+
+      useEffect(() => {
+            
+        fetchAmountAlerts();
+        checkText();
+
+        if(isConfirmed === "1") {
+            setEmailRoute("/confirmado");
+        }
+
+      }, [token]);
+
+
+      const fetchAmountAlerts = async () => {
+        if (!id || !token) {
+            console.error('Faltan valores requeridos (id o token)');
+            return;
+        }
+    
+        try {
+            const response = await axios.get(
+                `${myAPI}/user/amount_alerts`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                    params: { pId: id },
+                }
+            );
+    
+            localStorage.setItem('amount_alerts', response.data.value);
+        } catch (error) {
+            console.error('Error al obtener la cantidad de alertas:', error);
+            localStorage.clear();
+            navigate("/login");
+        }
+    };
+
+
+    const checkText = () => {
+
+      if(Number(amountAlerts) > 1) {
+          setAlertText('alertas pendientes');
+        }
+      }
+
+      const closeAlert = () => {
+        localStorage.setItem('isAlertClose', '1');
+        navigate("/gestion_barcos");
+    }
+
       
 
       const fetchShips = async () => {
@@ -70,7 +127,7 @@ const ShipManagement = () => {
   
         try {
           const response = await axios.get(
-            "http://localhost:8115/ship/list",
+            `${myAPI}/ship/list`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -161,7 +218,7 @@ const ShipManagement = () => {
         
         try {
             const response = await axios.post(
-                'http://localhost:8115/ship/delete',
+                `${myAPI}/ship/delete`,
                 { id: shipToDelete.id, type},
                 { headers: { Authorization: `Bearer ${token}` } }
               );
@@ -188,7 +245,7 @@ const ShipManagement = () => {
       setAlert({ message: myMessage, type: "success" });
       setTimeout(() => setAlert(null), 3000); 
 
-  };
+    };
 
     const openModal = (ship) => {
         setShipToDelete(ship);
@@ -212,6 +269,12 @@ const ShipManagement = () => {
     };
 
     const createPassengerShip = async () => {
+
+      if(name.length < 4) {
+        setMessage("El nombre debe tener más de 3 letras.");
+        return;
+      }
+
         try {
             const response = await axios.post(
                 'http://localhost:8115/Passenger_ship/create',
@@ -223,6 +286,7 @@ const ShipManagement = () => {
               fetchShips();
               viewTable();
               clearInputName();
+              setMessage("");
         }
         catch (e) {
             if (e.response && e.response.data && e.response.data.message) {
@@ -234,10 +298,15 @@ const ShipManagement = () => {
     }
 
     const createCargoShip = async () => {
-        
+
+      if(name.length < 4) {
+        setMessage("El nombre debe tener más de 3 letras.");
+        return;
+      }
+    
         try {
             const response = await axios.post(
-                'http://localhost:8115/cargoShip/create',
+                `${myAPI}/cargoShip/create`,
                 { name, idCargo: selectedLoadType },
                 { headers: { Authorization: `Bearer ${token}` } }
               );
@@ -246,6 +315,7 @@ const ShipManagement = () => {
               fetchShips();
               viewTable();
               clearInputName();
+              setMessage("");
         }
         catch (e) {
             if (e.response && e.response.data && e.response.data.message) {
@@ -299,7 +369,6 @@ const ShipManagement = () => {
         }
     }
 
-
     const paginationOptions = {
       rowsPerPageText: "Filas por página",
       rangeSeparatorText: "de",
@@ -333,6 +402,12 @@ const ShipManagement = () => {
                 </ul>
           </div>
         </div>
+        {Number(amountAlerts) > 0 && isAlertClose === "0" && <div className="alert-background-container">
+          <div className="alert-container">
+              <p>Tienes {amountAlerts} {alertText}, revise su correro electrónico</p>
+              <button type="button" onClick={closeAlert}>X</button>
+          </div>
+        </div>}
         <div className="form-main-container">
             <form className="form-content">
               <div className="form-title-container">
@@ -405,7 +480,7 @@ const ShipManagement = () => {
                         closeModal={closeModalEdit}
                         shipToEdit={shipToEdit}
                         editShip={editShip}
-                        setFormMessage={setMessage}
+                        setFormMessage={showSuccessMessage}
                     />}
         <div ref={tableRef} className="table-container">
             <DataTable

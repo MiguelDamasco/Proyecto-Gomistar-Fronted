@@ -154,11 +154,6 @@ const Login = () => {
          <button type="submit" class="submit">
         Ingresar
       </button>
-
-      <p class="signup-link">
-        Olvidaste la contraseña?&nbsp;
-        <a href="">Restablecer</a>
-      </p>
    </form>
     </div>
   );

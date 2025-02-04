@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveDocument4 = ({closeModal, idUser, token}) => {
+const ModalRemoveDocument4 = ({closeModal, idUser, token, alertMessage}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
+
+    const myAPI = "http://localhost:8115";
 
      useEffect(() => {
                     const interval = setInterval(() => {
@@ -23,9 +25,9 @@ const ModalRemoveDocument4 = ({closeModal, idUser, token}) => {
         setLoading(true);
     
         try {
-            // Realizar la solicitud DELETE al endpoint
+            
             const response = await axios.delete(
-                "http://localhost:8115/identity_card/delete",
+                `${myAPI}/identity_card/delete`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { pIdUser: idUser },
@@ -33,7 +35,8 @@ const ModalRemoveDocument4 = ({closeModal, idUser, token}) => {
             );
     
             if (response.status === 200) {
-                console.log(response.data.message || 'Documento eliminado correctamente.');
+                alertMessage(response.data.message);
+                localStorage.setItem('identity_card', '');
             } else {
                 console.error("No se pudo eliminar el documento.");
             }

@@ -7,6 +7,7 @@ import ModalRemoveAlert from "./modal/ModalRemoveAlert";
 import ModalEditAlert from "./modal/ModalEditAlert";
 import AlertMessage from "./AlertMessage";
 import "../../css/NavBar.css";
+import "../../css/General.css";
 
 
 const AlertAdmin = () => {
@@ -17,12 +18,17 @@ const AlertAdmin = () => {
     const [alertToDelete, setAlertToDelete] = useState(null);
     const [alertToModify, setAlertToModify] = useState(null);
     const [emailRoute, setEmailRoute] = useState('/confirmar_email');
+    const id = localStorage.getItem('id');
+    const amountAlerts = localStorage.getItem('amount_alerts');
+    const isAlertClose = localStorage.getItem('isAlertClose');
+    const [alertText, setAlertText] = useState('alerta pendiente');
     const [alert, setAlert] = useState(false);
     const isConfirmed = localStorage.getItem('email_confirm');
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
-    const idUser = localStorage.getItem('id');
+    const navigate = useNavigate();
 
+    const myAPI = "http://localhost:8115";
 
     useEffect(() => {
         
@@ -31,15 +37,62 @@ const AlertAdmin = () => {
         }
 
         fetchAlerts();
-    }, [token, idUser]);
+    }, [token, id]);
+
+
+
+    useEffect(() => {
+              
+      fetchAmountAlerts();
+      checkText();
+
+    }, [token]);
+
+
+
+    const fetchAmountAlerts = async () => {
+    if (!id || !token) {
+      console.error('Faltan valores requeridos (id o token)');
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+          `${myAPI}/user/amount_alerts`,
+          {
+              headers: { Authorization: `Bearer ${token}` },
+              params: { pId: id },
+          }
+      );
+
+      localStorage.setItem('amount_alerts', response.data.value);
+    } catch (error) {
+      console.error('Error al obtener la cantidad de alertas:', error);
+      localStorage.clear();
+      navigate("/login");
+    }
+    };
+
+
+    const checkText = () => {
+
+    if(Number(amountAlerts) > 1) {
+    setAlertText('alertas pendientes');
+    }
+    }
+
+    const closeAlert = () => {
+    localStorage.setItem('isAlertClose', '1');
+    navigate("/confirmar_email");
+    }
 
 
     const fetchAlerts = async () => {
         try {
             const response = await axios.get(
-              `http://localhost:8115/user/alerts_admin`,
+              `${myAPI}/user/alerts_admin`,
               {
-                params: { pIdUser: idUser },
+                params: { pIdUser: id },
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -65,13 +118,11 @@ const AlertAdmin = () => {
         };
 
     const openModalRemove = (alert) => {
-        console.log("Eliminado!");
         setIsModalDeleteOpen(true);
         setAlertToDelete(alert);
     };
 
     const openModalEdit = (alert) => {
-        console.log("Modificado!");
         setIsModalModifyOpen(true);
         setAlertToModify(alert);
     }
@@ -125,7 +176,7 @@ const AlertAdmin = () => {
                 <button
                   className="btn btn-edit"
                   onClick={(e) => {
-                      e.stopPropagation(); // Detener la propagación del evento
+                      e.stopPropagation();
                       openModalEdit(row);
                     }}
                   style={{ marginRight: "5px" }}
@@ -137,7 +188,7 @@ const AlertAdmin = () => {
                 <button
                   className="btn btn-delete"
                   onClick={(e) => {
-                      e.stopPropagation(); // Detener la propagación del evento
+                      e.stopPropagation();
                       openModalRemove(row);
                     }}
                 >
@@ -172,16 +223,22 @@ const AlertAdmin = () => {
                     <li><span class="dropdown-header">Configuración</span></li>
                     <li><hr class="dropdown-divider"/></li>
                     <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
-                    <li><a class="dropdown-item" href="#" >Something else here</a></li>
+                    <li><a class="dropdown-item" href="/cambiar_contraseña" >Cambiar contraseña</a></li>
                 </ul>
           </div>
         </div>
+        {Number(amountAlerts) > 0 && isAlertClose === "0" && <div className="alert-background-container">
+          <div className="alert-container">
+              <p>Tienes {amountAlerts} {alertText}, revise su correro electrónico</p>
+              <button type="button" onClick={closeAlert}>X</button>
+          </div>
+        </div>}
         <div className="main-container">
         <div className="title-container">
             <h1>Mis Alertas</h1>
         </div>
         </div>
-        <div className="data-container">
+        <div className="table-container">
             <DataTable
             title=""
             columns={columns}

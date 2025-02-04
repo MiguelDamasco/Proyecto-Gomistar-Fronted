@@ -7,11 +7,10 @@ import "../css/NavBar.css";
 import "../css/General.css";
 import "../css/Form.css";
 
-const ChangePassword = () => {
+const ChangeEmail = () => {
 
   const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [alert, setAlert] = useState(false);
@@ -26,6 +25,8 @@ const ChangePassword = () => {
   const navigate = useNavigate();
 
   const myAPI = "http://localhost:8115";
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
 
    useEffect(() => {
@@ -73,7 +74,7 @@ const ChangePassword = () => {
 
     const closeAlert = () => {
       localStorage.setItem('isAlertClose', '1');
-      navigate("/cambiar_contraseña");
+      navigate("/cambiar_email");
   }
 
   const showSuccessMessage = (myMessage) => {
@@ -86,50 +87,65 @@ const ChangePassword = () => {
     setError("");
     setMessage("");
 
-
-    if (newPassword.length < 8) {
-      setError("La nueva contraseña debe tener al menos 8 caracteres.");
-      return;
-    }
-
-    if (newPassword !== confirmNewPassword) {
-      setError("La nueva contraseña y su confirmación no coinciden.");
-      return;
+    if(!emailRegex.test(newEmail)) {
+        setError("El correo electrónico no es válido.");
+        return;
     }
 
     try {
-      const checkResponse = await axios.post(
-        `${myAPI}/user/checkPassword`,
+
+        const checkPasswordResponse = await axios.post(
+            `${myAPI}/user/checkPassword`,
+            {
+              idUser: id,
+              password: currentPassword,
+            },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+    
+          if (checkPasswordResponse.status !== 200) {
+            setError("La contraseña ingresada es incorrecta.");
+            return;
+          }
+
+          try {
+            const checkResponse = await axios.get(`${myAPI}/user/check_email`, {
+              params: { pEmail: newEmail },
+              headers: { Authorization: `Bearer ${token}` },
+            });
+      
+          } catch (error) {
+            if (error.response && error.response.status === 400) {
+              setError("El email ingresado ya está en uso.");
+              return;
+            }
+            console.error(error);
+            setError("Error al verificar el email.");
+            return;
+          }
+
+      const checkChange = await axios.patch(
+        `${myAPI}/user/change_email`,
         {
           idUser: id,
-          password: currentPassword,
+          email: newEmail,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (checkResponse.status !== 200) {
-        setError("La contraseña actual es incorrecta.");
+      if (checkChange.status !== 200) {
+        setError("Error al intentar cambiar el email.");
         return;
       }
 
-      const changeResponse = await axios.patch(
-        `${myAPI}/user/change_password`,
-        {
-          idUser: id,
-          password: newPassword,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      showSuccessMessage(changeResponse.data.message);
+      showSuccessMessage(checkChange.data.message);
 
       setCurrentPassword("");
-      setNewPassword("");
-      setConfirmNewPassword("");
+      setNewEmail("");
     } catch (err) {
       console.error(err);
       setError("Ocurrió un error al intentar cambiar la contraseña.");
@@ -157,7 +173,8 @@ const ChangePassword = () => {
             <li><span class="dropdown-header">Configuración</span></li>
             <li><hr class="dropdown-divider"/></li>
             <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
-            <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
+            <li><a class="dropdown-item" href="/cambiar_contraseña">Cambiar contraseña</a></li>
+            <li><a class="dropdown-item" href="#">Cambiar email</a></li>
         </ul>
       </div>
       </div>
@@ -172,7 +189,7 @@ const ChangePassword = () => {
       <div className="form-main-container">
         <form className="form-content">
         <div className="form-title-container">
-          <h1>Cambiar Contraseña</h1>
+          <h1>Cambiar Email</h1>
         </div>
         <div className="form-body-container">
           <div className="input-container">
@@ -181,24 +198,18 @@ const ChangePassword = () => {
               placeholder="Ingrese contraseña actual"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
+              maxLength={64}
             />
           </div>
           <div className="input-container">
             <input
-              type="password"
-              placeholder="Ingrese nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              minLength="8"
-            />
-          </div>
-          <div className="input-container">
-            <input
-              type="password"
-              placeholder="Confirme nueva contraseña"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-              minLength="8"
+              type="email"
+              name="email"
+              placeholder="Ingrese nuevo email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              maxLength={50}
+              required
             />
           </div>
           {error && <p className="error-message">{error}</p>}
@@ -224,4 +235,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangeEmail;

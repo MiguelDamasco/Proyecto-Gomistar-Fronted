@@ -61,9 +61,8 @@ const CreateUserModal = ({ closeModal, token, succesMessage, problemMessage, vie
         return; // No permite actualizar el estado si el valor contiene caracteres no permitidos
       }
 
-    // Validar solo letras y espacios en name y lastname
     if ((name === "name" || name === "lastname") && !/^[A-Za-z\s]*$/.test(value)) {
-      return; // No actualiza el estado si el valor no es válido
+      return;
     }
   
     setFormData({

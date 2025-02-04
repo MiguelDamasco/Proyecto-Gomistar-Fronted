@@ -12,7 +12,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        // Obtener tipos de carga desde la API
+        
         const fetchLoadType = async () => {
             try {
                 const response = await axios.get(
@@ -31,7 +31,6 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     }, [token]);
 
     useEffect(() => {
-        // Inicializar datos del barco
         setType(shipToEdit.typeShip === "Pasajeros" ? "Passenger" : "Cargo");
         setOriginalType(shipToEdit.typeShip === "Pasajeros" ? "Passenger" : "Cargo");
         setShipName(shipToEdit.name);
@@ -58,7 +57,12 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
     };
 
     const handleEditShip = async () => {
-        ;
+
+        if(shipName.length < 4) {
+            setMessage("El nombre debe tener más de 3 letras.");
+            return;
+        }
+
         try {
             if (type === "Passenger") {
                 if(originalType === "Passenger") {
@@ -77,7 +81,7 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
             }
 
             } else if (type === "Cargo") {
-                console.log("id Load: " + selectedLoadType);
+
                 if(originalType === "Cargo"){
                     await axios.put(
                         "http://localhost:8115/cargoShip/edit",
@@ -103,14 +107,24 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
                     );
                 }
             }
-            setFormMessage("barco modificado con exito!");
+            setFormMessage("¡Barco modificado!");
             editShip({ id: shipToEdit.id, name: shipName, type, loadType: selectedLoadType });
             closeModal();
         } catch (error) {
-            console.error("Error al guardar los cambios:", error);
-            setMessage("Seleccione un tipo de carga!");
+            setMessage("Seleccione un tipo de carga.");
         }
     };
+
+    const handleInputChange = (e) => {
+
+        const { name, value } = e.target;
+    
+        if ((name === "name") && !/^[A-Za-z\s]*$/.test(value)) {
+          return;
+        }
+      
+        setShipName(e.target.value);
+      };
 
     return (
         <div className="modal-background-container">
@@ -128,8 +142,10 @@ const ModalEditShip = ({ closeModal, shipToEdit, editShip, setFormMessage }) => 
                         <label>Nombre:</label>
                         <input
                             type="text"
+                            name="name"
                             value={shipName}
-                            onChange={(e) => setShipName(e.target.value)}
+                            onChange={handleInputChange}
+                            maxLength={30}
                         />
                     </div>
                     <div className="modal-type-container">

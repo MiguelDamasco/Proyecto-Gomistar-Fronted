@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveDocument3 = ({closeModal, idUser, token}) => {
+const ModalRemoveDocument3 = ({closeModal, idUser, token, alertMessage}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
+
+    const myAPI = "http://localhost:8115";
 
      useEffect(() => {
                     const interval = setInterval(() => {
@@ -23,9 +25,9 @@ const ModalRemoveDocument3 = ({closeModal, idUser, token}) => {
         setLoading(true);
     
         try {
-            // Realizar la solicitud DELETE al endpoint
+            
             const response = await axios.delete(
-                "http://localhost:8115/tetanus_vaccine_certificate/delete_document",
+                `${myAPI}/tetanus_vaccine_certificate/delete_document`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { pIdUser: idUser, pType: "3" },
@@ -33,7 +35,7 @@ const ModalRemoveDocument3 = ({closeModal, idUser, token}) => {
             );
     
             if (response.status === 200) {
-                console.log(response.data.message || 'Documento eliminado correctamente.');
+                alertMessage(response.data.message);
             } else {
                 console.error("No se pudo eliminar el documento.");
             }

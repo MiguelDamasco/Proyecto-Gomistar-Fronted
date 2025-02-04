@@ -1,0 +1,67 @@
+/* Contenedor principal */
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra las tarjetas */
+    padding: 20px; /* Pequeño espacio alrededor */
+    gap: 15px; /* Espacio entre tarjetas */
+  }
+  
+  /* Estilos generales para las tarjetas */
+  .card {
+    flex: 1 1 calc(30% - 20px); /* Cada tarjeta ocupa aproximadamente el 30% del ancho */
+    max-width: 350px; /* Evita que se hagan demasiado grandes */
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Contenedor de la imagen */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+  }
+  
+  .image-ship {
+    max-width: 80%; /* La imagen no ocupa todo el ancho */
+    max-height: 120px;
+    object-fit: contain;
+  }
+  
+  /* Contenedor de texto */
+  .text-container {
+    margin-top: 10px;
+  }
+  
+  .text-ship {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 900px) {
+    .card {
+      flex: 1 1 calc(45% - 20px); /* 2 tarjetas por fila en pantallas medianas */
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .card {
+      flex: 1 1 90%; /* Ocupan casi todo el ancho en móviles, pero con un margen */
+    }
+  }
+  
+  
+  

@@ -29,12 +29,16 @@ const CreateUser = () => {
     roles: [],
   });
   const username = localStorage.getItem('username');
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
+  const id = localStorage.getItem('id');
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [alert, setAlert] = useState(false)
+  const [alert, setAlert] = useState(false);
   const isConfirmed = localStorage.getItem('email_confirm');
-  const [emailRoute, setEmailRoute] = useState('/confirmar_email')
+  const [emailRoute, setEmailRoute] = useState('/confirmar_email');
+  const amountAlerts = localStorage.getItem('amount_alerts');
+  const isAlertClose = localStorage.getItem('isAlertClose');
+  const [alertText, setAlertText] = useState('alerta pendiente');
   const navigate = useNavigate();
   const tableRef = useRef(null);
   
@@ -49,6 +53,53 @@ const CreateUser = () => {
 
           fetchUsers();
       }, [token]);
+
+
+
+      useEffect(() => {
+              
+        fetchAmountAlerts();
+        checkText();
+  
+      }, [token]);
+  
+  
+  
+      const fetchAmountAlerts = async () => {
+      if (!id || !token) {
+        console.error('Faltan valores requeridos (id o token)');
+        return;
+      }
+  
+      try {
+        const response = await axios.get(
+            `${myAPI}/user/amount_alerts`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { pId: id },
+            }
+        );
+  
+        localStorage.setItem('amount_alerts', response.data.value);
+      } catch (error) {
+        console.error('Error al obtener la cantidad de alertas:', error);
+        localStorage.clear();
+        navigate("/login");
+      }
+      };
+  
+  
+      const checkText = () => {
+  
+        if(Number(amountAlerts) > 1) {
+          setAlertText('alertas pendientes');
+        }
+      }
+  
+      const closeAlert = () => {
+        localStorage.setItem('isAlertClose', '1');
+        navigate("/usuarios");
+      }
 
 
         const showSuccessMessage = (myMessage) => {
@@ -209,8 +260,9 @@ const CreateUser = () => {
         <div className="navegation-main-container">
       <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
       <p className="separator">&gt;</p>
+      <NavLink className="no-active" to="/gestion_usuarios">Usuarios</NavLink>
+      <p className="separator">&gt;</p>
       <NavLink className="active">Crear Usuario</NavLink>
-      
       </div>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -224,11 +276,19 @@ const CreateUser = () => {
             <li><span class="dropdown-header">Configuración</span></li>
             <li><hr class="dropdown-divider"/></li>
             <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="/cambiar_contraseña">Cambiar Contraseña</a></li>
+            <li><a class="dropdown-item" href="/cambiar_email">Cambiar Email</a></li>
         </ul>
 </div>
    </div>
     
+   {Number(amountAlerts) > 0 && isAlertClose === "0" && <div className="alert-background-container">
+          <div className="alert-container">
+              <p>Tienes {amountAlerts} {alertText}, revise su correro electrónico</p>
+              <button type="button" onClick={closeAlert}>X</button>
+          </div>
+        </div>}
+
     <div className="main-container">
         <div className="title-container">
             <h1>Gestión Usuarios</h1>

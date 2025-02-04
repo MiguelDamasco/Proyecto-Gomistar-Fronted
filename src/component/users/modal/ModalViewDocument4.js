@@ -63,52 +63,52 @@ const ModalViewDocument4 = ({ closeModal, idUser, token }) => {
     };
     
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Mi Documento</h1>
                 </div>
                 {!loading && lectureData && (
-                    <div className="body-container">
+                    <div className="modal-body-container">
                         <div className="full-name-container">
                             <label>Nombres: </label>
-                            <p>{lectureData.name || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.name || 'N/A'}</p>
                         </div>
                         <div className="lastname-container">
                             <label>Apellidos: </label>
-                            <p>{lectureData.lastname || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.lastname || 'N/A'}</p>
                         </div>
                         <div className="nationality-container">
                             <label>Nacionalidad: </label>
-                            <p>{lectureData.nationality || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.nationality || 'N/A'}</p>
                         </div>
                         <div className="identityNumber-container">
                             <label>Número identidad: </label>
-                            <p>{lectureData.identityNumber || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.identityNumber || 'N/A'}</p>
                         </div>
                         <div className="birthday-container">
                             <label>Fecha nacimiento: </label>
-                            <p>{lectureData.birthday || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.birthday || 'N/A'}</p>
                         </div>
                         <div className="expedition-date-container">
                             <label>Fecha expedición: </label>
-                            <p>{lectureData.expeditionDate || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px' }}>{lectureData.expeditionDate || 'N/A'}</p>
                         </div>
                         <div className="expiration-date-container">
                             <label>Fecha expiración: </label>
-                            <p>{lectureData.expirationData || 'N/A'}</p>
+                            <p style={{ color: '#696969', fontSize: '16px', marginBottom: '30px' }}>{lectureData.expirationData || 'N/A'}</p>
                         </div>
                     </div>
                 )}
                 {loading && (
-                    <div className="body-container">
+                    <div className="modal-body-container">
                         <p>Cargando{dots}</p>
                     </div>
                 )}
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal} disabled={loading}>
                         Cancelar
                     </button>

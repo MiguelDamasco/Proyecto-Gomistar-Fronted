@@ -5,19 +5,18 @@ import '../css/NavBar.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username'); // Obtener el nombre del usuario del localStorage
+  const username = localStorage.getItem('username');
 
-  const handleLogout = () => {
-    localStorage.clear(); // Limpiar localStorage al cerrar sesión
-    navigate('/login'); // Redirigir al login
-  };
+
 
   return (
     <>
    <NavBar myUser={username} ></NavBar>
    <div className='navegation-container'>
-      <NavLink className="active" to="#">Inicio</NavLink>
-      <p className="hidden-separator">&gt;</p>
+    <div className="navegation-main-container">
+        <NavLink className="active" to="#">Inicio</NavLink>
+        <p className="hidden-separator">&gt;</p>
+      </div>
    </div>
         <div className="ship-container">
           <div class="card">

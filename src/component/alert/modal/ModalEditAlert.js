@@ -43,7 +43,7 @@ const ModalEditAlert = ({ closeModal, alertToEdit, token, alertMessage }) => {
                 "http://localhost:8115/alert/modify",
                 {
                     id: alertToEdit.id,
-                    date, // Se envía en formato yyyy-MM-dd
+                    date,
                 },
                 {
                     headers: {
@@ -62,15 +62,15 @@ const ModalEditAlert = ({ closeModal, alertToEdit, token, alertMessage }) => {
     };
 
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Editar Alerta</h1>
                 </div>
-                <div className="date-container">
+                <div className="modal-field-container">
                     <label htmlFor="alert-date">Fecha:</label>
                     <input
                         id="alert-date"
@@ -83,7 +83,7 @@ const ModalEditAlert = ({ closeModal, alertToEdit, token, alertMessage }) => {
                 <div className="message-container">
                     <p>{message}</p>
                 </div>
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal}>Cancelar</button>
                     <button
                         onClick={handleEditAlert}

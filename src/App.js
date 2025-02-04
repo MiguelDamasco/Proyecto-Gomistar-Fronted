@@ -24,6 +24,7 @@ import CreateUser from './component/users/CreateUser';
 import ConfirmEmail from './component/ConfirmEmail';
 import ConfirmedEmail from './component/ConifrmedEmail';
 import ChangePassword from './component/ChangePassword';
+import ChangeEmail from './component/ChangeEmail';
 
 export const userContext = React.createContext();
 
@@ -82,6 +83,7 @@ const App = () => {
           <Route path="/confirmar_email" element={<ConfirmEmail />}></Route>
           <Route path="/confirmado" element={<ConfirmedEmail />}></Route>
           <Route path="/cambiar_contraseña" element={<ChangePassword />}></Route>
+          <Route path="/cambiar_email" element={<ChangeEmail />}></Route>
 
         </Route>
       </Routes>

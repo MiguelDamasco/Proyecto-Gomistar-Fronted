@@ -70,24 +70,24 @@ const ModalViewDocument1 = ({ closeModal, idUser, token }) => {
     
     
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Mi Documento</h1>
                 </div>
-                    {!loading && <div className="body-container">
+                    {!loading && <div className="modal-body-container">
                         <img src={image} alt="Documento" style={{ maxWidth: '100%' }}></img>
                         <hr></hr>
-                        <p>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
+                        <p style={{ color: 'gray', fontSize: '16px', marginBottom: '30px' }}>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
                     </div> }
 
-                    {loading && <div className="body-container">
+                    {loading && <div className="modal-body-container">
                         <p>Cargando{dots}</p>
                     </div> }
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal} disabled={loading}>Cancelar</button>
                     <button type="button" onClick={downloadDocument} disabled={loading}>Descargar</button>
                 </div>

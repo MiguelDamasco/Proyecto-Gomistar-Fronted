@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../../../css/modal/ViewIdentityCardModal.css";
 
-const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
+const ModalAddDocument4 = ({ closeModal, idUser, token, alertMessage }) => {
     const [expirationDate, setExpirationDate] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [firstStage, setFirstStage] = useState(true);
@@ -20,6 +20,9 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
         expeditionDate: '',
         expirationData: '',
     });
+
+
+    const myAPI = "http://localhost:8115";
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -48,14 +51,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
     
         // Crear el formato ISO yyyy-mm-dd
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    };
-
-    const cancelAndClean = () => {
-
-        localStorage.setItem('identity_card', '');
-        closeModal();
-    }
-    
+    };    
     
     const lecture = async () => {
         if (existFile()) {
@@ -63,8 +59,8 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
             try {
                 const formData = new FormData();
                 formData.append('pFile', selectedFile);
-
-                const response = await axios.post('http://localhost:8115/identity_card/lecture', formData, {
+                
+                const response = await axios.post(`${myAPI}/identity_card/lecture`, formData, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
@@ -72,7 +68,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
                 });
 
                 if (response.status === 200) {
-                    console.log('Lectura completada:', response.data);
+                    
                     if (response.data && response.data.value) {
                         setLectureData({
                             name: response.data.value.name || '',
@@ -103,7 +99,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            // Asegúrate de que las fechas sean válidas
+            
             const formattedBirthday = new Date(lectureData.birthday);
             const formattedExpeditionDate = new Date(lectureData.expeditionDate);
             const formattedExpirationData = new Date(lectureData.expirationData);
@@ -123,7 +119,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
                 file: file_search
             };
     
-            const response = await axios.post('http://localhost:8115/identity_card/create', payload, {
+            const response = await axios.post(`${myAPI}/identity_card/create`, payload, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -131,7 +127,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
             });
     
             if (response.status === 200) {
-                console.log('Documento ingresado con éxito:', response.data);
+                alertMessage(response.data.message);
                 closeModal();
             } else {
                 console.error('Error al crear el documento:', response);
@@ -168,7 +164,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
         }
 
         try {
-            const response = await axios.delete('http://localhost:8115/identity_card/cancel', {
+            const response = await axios.delete(`${myAPI}/identity_card/cancel`, {
                 params: { pFile: fileToCancel },
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -176,7 +172,7 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
             });
 
             if (response.status === 200) {
-                console.log("Cancelación exitosa:", response.data);
+                
                 localStorage.setItem('identity_card', '');
                 setLectureData({
                     name: '',
@@ -199,27 +195,27 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
     }
 
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Agregar Documento</h1>
                 </div>
                 {!loading && firstStage && (
-                    <div className="body-container">
+                    <div className="modal-body-container">
                         <input type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     </div>
                 )}
                 {loading && firstStage && (
-                    <div className="body-container">
-                        <p>Analizando{dots}</p>
+                    <div className="modal-body-container">
+                        <p style={{ color: 'black' }}>Analizando{dots}</p>
                     </div>
                 )}
                 {!loading && secondStage && (
-                    <div className="body-container">
+                    <div className="modal-body-container">
                         <div className="name-container">
                             <label>Nombre</label>
                             <input
@@ -283,13 +279,13 @@ const ModalAddDocument4 = ({ closeModal, idUser, token }) => {
                     </div>
                 )}
                 {firstStage && (
-                    <div className="footer-container">
+                    <div className="modal-footer-container">
                         <button onClick={closeModal} disabled={loading}>Cancelar</button>
                         <button type="button" onClick={lecture} disabled={loading}>Agregar</button>
                     </div>
                 )}
                 {secondStage && (
-                    <div className="footer-container">
+                    <div className="modal-footer-container">
                         <button onClick={cancelUpload} disabled={loading}>Cancelar</button>
                         <button type="button" onClick={handleSubmit} disabled={loading}>Confirmar</button>
                     </div>
