@@ -3,6 +3,7 @@ import NavBar from "./NavBarComponent";
 import { useNavigate, NavLink } from 'react-router-dom';
 import axios from "axios";
 import AlertMessage from "./alert/AlertMessage";
+import Footer from "./Footer";
 import "../css/NavBar.css";
 import "../css/General.css";
 import "../css/Form.css";
@@ -231,6 +232,9 @@ const ChangeEmail = () => {
           onClose={() => setAlert(null)}
         />
       )}
+
+
+    <Footer></Footer>
     </>
   );
 };

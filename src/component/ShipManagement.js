@@ -7,6 +7,7 @@ import "../css/NavBar.css";
 import ModalDeleteShip from "./modal/ModalDeleteShip";
 import ModalEditShip from "./modal/ModalEditShip";
 import AlertMessage from "./alert/AlertMessage";
+import Footer from "./Footer";
 import "../css/ModalDeleteShip.css";
 import "../css/Form.css";
 import "../css/General.css";
@@ -398,7 +399,8 @@ const ShipManagement = () => {
                     <li><span class="dropdown-header">Configuración</span></li>
                     <li><hr class="dropdown-divider"/></li>
                     <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
-                    <li><a class="dropdown-item" href="#" >Something else here</a></li>
+                    <li><a class="dropdown-item" href="/cambiar_contraseña">Cambiar contraseña</a></li>
+                    <li><a class="dropdown-item" href="/cambiar_email">Cambiar email</a></li>
                 </ul>
           </div>
         </div>
@@ -495,6 +497,7 @@ const ShipManagement = () => {
             paginationComponentOptions={paginationOptions}
         />
         </div>
+        <Footer></Footer>
         </>
     )
 }

@@ -3,6 +3,7 @@ import NavBar from "./NavBarComponent";
 import { useNavigate, NavLink } from 'react-router-dom';
 import axios from "axios";
 import AlertMessage from "./alert/AlertMessage";
+import Footer from "./Footer";
 import "../css/NavBar.css";
 import "../css/General.css";
 import "../css/Form.css";
@@ -158,6 +159,7 @@ const ChangePassword = () => {
             <li><hr class="dropdown-divider"/></li>
             <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
             <li><a class="dropdown-item" href="#">Cambiar contraseña</a></li>
+            <li><a class="dropdown-item" href="/cambiar_email">Cambiar email</a></li>
         </ul>
       </div>
       </div>
@@ -220,6 +222,8 @@ const ChangePassword = () => {
           onClose={() => setAlert(null)}
         />
       )}
+
+    <Footer></Footer>
     </>
   );
 };

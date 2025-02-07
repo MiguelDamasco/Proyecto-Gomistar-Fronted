@@ -58,7 +58,7 @@ const ModalRemoveDocument3 = ({closeModal, idUser, token, alertMessage}) => {
                     <h1>Remover documento</h1>
                 </div>
                 <div className="body-container">
-                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>carnet de salud</strong>?</p> }
+                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>certificado de vacuna tetánica</strong>?</p> }
                     {loading && <p>Eliminado{dots}</p>}
                 </div>
                 <div className="footer-container">

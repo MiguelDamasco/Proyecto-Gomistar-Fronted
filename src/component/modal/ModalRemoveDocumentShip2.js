@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveDocumentShip2 = ({closeModal, idShip, token}) => {
+const ModalRemoveDocumentShip2 = ({closeModal, idShip, token, alertMessage}) => {
 
         const [loading, setLoading] = useState(false);
         const [dots, setDots] = useState('');
+
+        const myAPI = "http://localhost:8115";
 
     useEffect(() => {
                 const interval = setInterval(() => {
@@ -23,9 +25,9 @@ const ModalRemoveDocumentShip2 = ({closeModal, idShip, token}) => {
         setLoading(true);
     
         try {
-            // Realizar la solicitud DELETE al endpoint
+            
             const response = await axios.delete(
-                "http://localhost:8115/certificate_navigability/delete_document",
+                `${myAPI}/certificate_navigability/delete_document`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { pIdShip: idShip, pType: "2" },
@@ -34,6 +36,7 @@ const ModalRemoveDocumentShip2 = ({closeModal, idShip, token}) => {
     
             if (response.status === 200) {
                 console.log(response.data.message || 'Documento eliminado correctamente.');
+                alertMessage(response.data.message);
             } else {
                 console.error("No se pudo eliminar el documento.");
             }

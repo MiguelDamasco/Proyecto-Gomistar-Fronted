@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from "react";
-import NavBar from "./../NavBarComponent";
+import React, { useState, useEffect, useRef  } from "react";
+import NavBar from "./NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
-import ModalAddDocument1 from "./modal/ModalAddDocument1";
-import ModalViewDocument1 from "./modal/ModalViewDocument1";
-import ModalRemoveDocument1 from "./modal/ModalRemoveDocument1";
-import ModalAddDocument2 from "./modal/ModalAddDocument2";
-import ModalViewDocument2 from "./modal/ModalViewDocument2";
-import ModalRemoveDocument2 from "./modal/ModalRemoveDocument2";
-import ModalAddDocument3 from "./modal/ModalAddDocument3";
-import ModalViewDocument3 from "./modal/ModalViewDocument3";
-import ModalRemoveDocument3 from "./modal/ModalRemoveDocument3";
-import ModalAddDocument4 from "./modal/ModalAddDocument4";
-import ModalViewDocument4 from "./modal/ModalViewDocument4";
-import ModalRemoveDocument4 from "./modal/ModalRemoveDocument4";
-import AlertMessage from "../alert/AlertMessage";
-import Footer from "../Footer";
-import "../../css/NavBar.css";
-import "../../css/Alert.css";
-import "../../css/DocumentCard.css";
+import DataTable from "react-data-table-component";
+import "../css/NavBar.css";
+import ModalDeleteShip from "./modal/ModalDeleteShip";
+import ModalEditShip from "./modal/ModalEditShip";
+import AlertMessage from "./alert/AlertMessage";
+import ModalAddDocument1 from "./users/modal/ModalAddDocument1";
+import ModalAddDocument2 from "./users/modal/ModalAddDocument2";
+import ModalAddDocument3 from "./users/modal/ModalAddDocument3";
+import ModalAddDocument4 from "./users/modal/ModalAddDocument4";
+import ModalViewDocument1 from "./users/modal/ModalViewDocument1";
+import ModalViewDocument2 from "./users/modal/ModalViewDocument2";
+import ModalViewDocument3 from "./users/modal/ModalViewDocument3";
+import ModalViewDocument4 from "./users/modal/ModalViewDocument4";
+import ModalRemoveDocument1 from "./users/modal/ModalRemoveDocument1";
+import ModalRemoveDocument2 from "./users/modal/ModalRemoveDocument2";
+import ModalRemoveDocument3 from "./users/modal/ModalRemoveDocument3";
+import ModalRemoveDocument4 from "./users/modal/ModalRemoveDocument4";
+import Footer from "./Footer";
+import "../css/ModalDeleteShip.css";
+import "../css/Form.css";
+import "../css/General.css";
 
 
-const DocumentsByUserComponent = () => {
+const DocumentUser = () => {
 
     const [amountDocuments, setAmounDocuments] = useState([]);
     const [document1Active, setDocument1Active] = useState(false);
@@ -47,7 +51,7 @@ const DocumentsByUserComponent = () => {
     const [expirationDate, setExpirationDate] = useState('');
     const [documentNumber, setDocumentNumber] = useState('');
     const username = localStorage.getItem('username');
-    const idUser = localStorage.getItem('idUser');
+    const idUser = localStorage.getItem('id');
     const id = localStorage.getItem('id');
     const token = localStorage.getItem('token');
     const amountAlerts = localStorage.getItem('amount_alerts');
@@ -311,12 +315,9 @@ const DocumentsByUserComponent = () => {
     <NavBar myUser={username} ></NavBar>
     <div className='navegation-container'>
         <div className="navegation-main-container">
-            <NavLink className="no-active" to="/gestion_usuarios">Usuarios</NavLink>
+            <NavLink className="no-active" to="/user_panel">Inicio</NavLink>
             <p className="separator">&gt;</p>
-            <NavLink className="no-active" to="/documentos_usuario_admin">Documentos Usuarios</NavLink>
-            <p className="separator">&gt;</p>
-            <NavLink className="active" to="#">Documentos</NavLink>
-            <p className="hidden-separator">&gt;</p>
+            <NavLink className="active" to="#">Mis documentos</NavLink>
       </div>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -504,4 +505,4 @@ const DocumentsByUserComponent = () => {
     )
 }
 
-export default DocumentsByUserComponent;
+export default DocumentUser;

@@ -3,6 +3,7 @@ import NavBar from "../NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import DataTable from "react-data-table-component";
+import Footer from '../Footer';
 import "../../css/NavBar.css";
 import "../../css/ShipDashboard.css";
 
@@ -83,7 +84,6 @@ const UserDocument = () => {
         navigate("/login");
     }
   };
-
 
     const checkText = () => {
 
@@ -299,7 +299,7 @@ const UserDocument = () => {
               <li><hr class="dropdown-divider"/></li>
               <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
               <li><a class="dropdown-item" href="/cambiar_contraseña">Cambiar contraseña</a></li>
-              <li><a class="dropdown-item" href="#">Cambiar email</a></li>
+              <li><a class="dropdown-item" href="/cambiar_email">Cambiar email</a></li>
           </ul>
       </div>
       </div>
@@ -344,6 +344,8 @@ const UserDocument = () => {
         paginationComponentOptions={paginationOptions}
       />
       </div>
+
+      <Footer></Footer>
     </>
   );
 };

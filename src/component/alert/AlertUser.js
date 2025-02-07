@@ -11,7 +11,7 @@ import "../../css/NavBar.css";
 import "../../css/General.css";
 
 
-const AlertAdmin = () => {
+const AlertUser = () => {
 
     const [alerts, setAlerts] = new useState([]);
     const [isModalModifyOpen, setIsModalModifyOpen] = useState(false);
@@ -91,7 +91,7 @@ const AlertAdmin = () => {
     const fetchAlerts = async () => {
         try {
             const response = await axios.get(
-              `${myAPI}/user/alerts_admin`,
+              `${myAPI}/user/alerts_user`,
               {
                 params: { pIdUser: id },
                 headers: {
@@ -208,7 +208,7 @@ const AlertAdmin = () => {
         <NavBar myUser={username} ></NavBar>
         <div className="navegation-container">
             <div className="navegation-main-container">
-            <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
+            <NavLink className="no-active" to="/user_panel">Inicio</NavLink>
             <p className="separator">&gt;</p>
             <NavLink className="active" to="#">Alertas</NavLink>
             <p className="hidden-separator">&gt;</p>
@@ -281,4 +281,4 @@ const AlertAdmin = () => {
       )
 }
 
-export default AlertAdmin;
+export default AlertUser;

@@ -43,7 +43,7 @@ const ModalViewDocument1 = ({ closeModal, idUser, token }) => {
 
     const downloadDocument = async () => {
         try {
-            // Solicitar al backend para obtener la URL prefirmada
+            
             const response = await axios.get('http://localhost:8115/health_card/download_image', {
                 params: { pIdUser: idUser },
                 headers: {

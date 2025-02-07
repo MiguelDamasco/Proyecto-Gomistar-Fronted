@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./NavBarComponent";
 import { useNavigate, NavLink, Link } from 'react-router-dom';
 import DataTable from "react-data-table-component";
+import Footer from "./Footer";
 import axios from "axios";
 import "../css/NavBar.css";
 import "../css/shipDocuments.css";
@@ -12,7 +13,89 @@ const DocumentShipManagement = () => {
     const [shipType, setShipType] = useState("");
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
+    const isConfirmed = localStorage.getItem('email_confirm');
+    const [emailRoute, setEmailRoute] = useState('/confirmar_email');
+    const amountAlerts = localStorage.getItem('amount_alerts');
+    const isAlertClose = localStorage.getItem('isAlertClose');
+    const [alertText, setAlertText] = useState('alerta pendiente');
+    const id = localStorage.getItem('id');
     const navigate = useNavigate();
+
+    const tableRef = useRef(null);
+    
+    const myAPI = "http://localhost:8115";
+
+
+    useEffect(() => {
+      const fetchShips = async () => {
+        try {
+          if (!token) {
+            console.error("No se encontró el token JWT.");
+            return;
+          }
+          
+          const response = await axios.get(`${myAPI}/ship/list`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          setShips(response.data.value); 
+        } catch (error) {
+          console.error("Error al obtener los barcos:", error);
+        }
+      };
+  
+      fetchShips();
+    }, [token]);
+  
+  
+    useEffect(() => {
+              
+      fetchAmountAlerts();
+      checkText();
+  
+      if(isConfirmed === "1") {
+          setEmailRoute("/confirmado");
+      }
+  
+    }, [token]);
+  
+  
+    const fetchAmountAlerts = async () => {
+      if (!id || !token) {
+          console.error('Faltan valores requeridos (id o token)');
+          return;
+      }
+  
+      try {
+          const response = await axios.get(
+              `${myAPI}/user/amount_alerts`,
+              {
+                  headers: { Authorization: `Bearer ${token}` },
+                  params: { pId: id },
+              }
+          );
+  
+          localStorage.setItem('amount_alerts', response.data.value);
+      } catch (error) {
+          console.error('Error al obtener la cantidad de alertas:', error);
+          localStorage.clear();
+          navigate("/login");
+      }
+    };
+  
+      const checkText = () => {
+  
+      if(Number(amountAlerts) > 1) {
+        setAlertText('alertas pendientes');
+      }
+      }
+  
+      const closeAlert = () => {
+      localStorage.setItem('isAlertClose', '1');
+      navigate("/documentos_usuario_admin");
+      }
 
     const fetchCargoShips = async () => {
 
@@ -81,6 +164,11 @@ const DocumentShipManagement = () => {
                 } else if (selectedType === "Pasajeros") {
                     fetchPassengerShips();
                 }
+                setTimeout(() => {
+                  if (tableRef.current) {
+                    tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
+                }, 200);
             };
 
             const handleShipDocument = (ship) => {
@@ -196,20 +284,52 @@ const DocumentShipManagement = () => {
                   },
             ];
         
-    
+            const paginationOptions = {
+              rowsPerPageText: "Filas por página",
+              rangeSeparatorText: "de",
+              noRowsPerPage: false,
+              selectAllRowsItem: false,
+            };
 
     return (
         <>
             <NavBar myUser={username} ></NavBar>
             <div className='navegation-container'>
-                <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
-                <p className="separator">&gt;</p>
-                <NavLink className="no-active" to="/barcos">Embarcaciones</NavLink>
-                <p className="separator">&gt;</p>
-                <NavLink className="active" to="#">Documentos embarcación</NavLink>
-                <p className="hidden-separator">&gt;</p>
+              <div className="navegation-main-container">
+                  <NavLink className="no-active" to="/admin_panel">Inicio</NavLink>
+                  <p className="separator">&gt;</p>
+                  <NavLink className="no-active" to="/barcos">Embarcaciones</NavLink>
+                  <p className="separator">&gt;</p>
+                  <NavLink className="active" to="#">Documentos embarcación</NavLink>
+                  <p className="hidden-separator">&gt;</p>
+                </div>
+                <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <svg id="gear-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+          <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+          <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+          </svg>
+          </button>
+
+          <ul class="dropdown-menu">
+              <li><span class="dropdown-header">Configuración</span></li>
+              <li><hr class="dropdown-divider"/></li>
+              <li><a class="dropdown-item" href={emailRoute}>Confirmar email</a></li>
+              <li><a class="dropdown-item" href="/cambiar_contraseña">Cambiar contraseña</a></li>
+              <li><a class="dropdown-item" href="/cambiar_email">Cambiar email</a></li>
+          </ul>
+      </div>
             </div>
+            {Number(amountAlerts) > 0 && isAlertClose === "0" && <div className="alert-background-container">
+    <div className="alert-container">
+        <p>Tienes {amountAlerts} {alertText}, revise su correro electrónico</p>
+        <button type="button" onClick={closeAlert}>X</button>
+    </div>
+   </div>}
             <div className="main-container">
+              <div className="title-container">
+                <h1>Embarcaciones</h1>
+              </div>
                 <div className="selector-container">
                 <label htmlFor="shipType">Tipo de Barco:</label>
                     <select id="shipType" value={shipType} onChange={handleShipTypeChange}>
@@ -219,6 +339,7 @@ const DocumentShipManagement = () => {
                     </select>
                 </div>
             </div>
+        <div ref={tableRef} className="table-container">
             <DataTable
         title=""
         columns={columns}
@@ -227,7 +348,12 @@ const DocumentShipManagement = () => {
         responsive
         striped
         highlightOnHover
+        noDataComponent={<div style={{ textAlign: 'center', padding: '10px' }}>No hay información que mostrar</div>}
+        paginationComponentOptions={paginationOptions}
       />
+      </div>
+
+      <Footer></Footer>
         </>
     );
 }

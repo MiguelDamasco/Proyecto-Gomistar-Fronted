@@ -25,6 +25,10 @@ import ConfirmEmail from './component/ConfirmEmail';
 import ConfirmedEmail from './component/ConifrmedEmail';
 import ChangePassword from './component/ChangePassword';
 import ChangeEmail from './component/ChangeEmail';
+import AlertUser from './component/alert/AlertUser';
+import UserRolDashboard from './component/UserRolDashboard';
+import DocumentUser from './component/DocumentUser';
+
 
 export const userContext = React.createContext();
 
@@ -46,7 +50,23 @@ const App = () => {
     <BrowserRouter>
         <Routes>
         <Route path="/login" element={<Login />} />
+
         <Route
+        element={
+          <ProtectedRoute
+            isAllowed={!!username && (roleList.includes('USER') || roleList.includes('ADMIN'))}
+            redirectTo="/login"
+          />
+        }
+      >
+        
+        <Route path="/confirmar_email" element={<ConfirmEmail />} />
+        <Route path="/confirmado" element={<ConfirmedEmail />} />
+        <Route path="/cambiar_contraseña" element={<ChangePassword />} />
+        <Route path="/cambiar_email" element={<ChangeEmail />} />
+      </Route>
+
+      <Route
           element={
             <ProtectedRoute
               isAllowed={!!username && roleList.includes('USER')}
@@ -54,10 +74,13 @@ const App = () => {
             />
           }
         >
-          <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/configuration" element={<UserDashboard />} />
-          <Route path="*" element={<Dashboard />} />
+          <Route path="/alertas_usuario" element={<AlertUser />}></Route>
+          <Route path="/user_panel" element={<UserRolDashboard />}></Route>
+          <Route path="/mis_documentos" element={<DocumentUser />}></Route>
+          <Route path="*" element={<UserRolDashboard />} />
         </Route>
+
 
         <Route
           element={
@@ -86,6 +109,7 @@ const App = () => {
           <Route path="/cambiar_email" element={<ChangeEmail />}></Route>
 
         </Route>
+
       </Routes>
     </BrowserRouter>
     </userContext.Provider>

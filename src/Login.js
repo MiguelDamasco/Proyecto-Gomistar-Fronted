@@ -115,7 +115,8 @@ const Login = () => {
         if (roles.includes('ADMIN')) {
           navigate('/admin_panel');
         } else if (roles.includes('USER')) {
-          navigate('/dashboard');
+          navigate('/user_panel');
+          console.log("Entro usuario!");
         } else {
           alert('No tienes acceso a ningún dashboard.');
         }

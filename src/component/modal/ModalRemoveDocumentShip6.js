@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const ModalRemoveDocumentShip6 = ({closeModal, idShip, token}) => {
+const ModalRemoveDocumentShip6 = ({closeModal, idShip, token, alertMessage}) => {
 
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
+
+    const myAPI = "http://localhost:8115";
     
     useEffect(() => {
             const interval = setInterval(() => {
                     setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
-                }, 400); // Cambia cada 500ms
+                }, 400);
                     
-                return () => clearInterval(interval); // Limpia el intervalo al desmontar
+                return () => clearInterval(interval);
             }, []);
 
     const deleteDocument = async () => {
@@ -23,9 +25,9 @@ const ModalRemoveDocumentShip6 = ({closeModal, idShip, token}) => {
         setLoading(true);
     
         try {
-            // Realizar la solicitud DELETE al endpoint
+            
             const response = await axios.delete(
-                "http://localhost:8115/minimum_security_equipment/delete_document",
+                `${myAPI}/minimum_security_equipment/delete_document`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { pIdShip: idShip, pType: "6" },
@@ -34,6 +36,7 @@ const ModalRemoveDocumentShip6 = ({closeModal, idShip, token}) => {
     
             if (response.status === 200) {
                 console.log(response.data.message || 'Documento eliminado correctamente.');
+                alertMessage(response.data.message);
             } else {
                 console.error("No se pudo eliminar el documento.");
             }
@@ -56,7 +59,7 @@ const ModalRemoveDocumentShip6 = ({closeModal, idShip, token}) => {
                     <h1>Remover documento</h1>
                 </div>
                 <div className="body-container">
-                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>Certificado equipo de seguridad minimo</strong>?</p> }
+                    {!loading && <p>Estas seguro que quieres eliminar el documento <strong>Certificado equipo de seguridad mínimo</strong>?</p> }
                     {loading && <p>Eliminado{dots}</p>}
                 </div>
                 <div className="footer-container">

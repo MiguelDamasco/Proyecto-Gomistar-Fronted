@@ -10,6 +10,7 @@ import CreateUserModal from "./modal/CreateUserModal";
 import ModifyUserModal from "./modal/ModifyUserModal";
 import DeleteUserModal from "./modal/DeleteUserModal";
 import AlertMessage from "../alert/AlertMessage";
+import Footer from "../Footer";
 
 
 const CreateUser = () => {
@@ -345,6 +346,7 @@ const CreateUser = () => {
     deleteMessage={showSuccessMessage}
     />}
     
+    <Footer></Footer>
     </>
   );
 };

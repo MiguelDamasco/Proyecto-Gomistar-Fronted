@@ -8,6 +8,7 @@ const ModalViewDocumentShip3 = ({ closeModal, idShip, token }) => {
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
 
+    const myAPI = "http://localhost:8115";
 
     useEffect(() => {
             const interval = setInterval(() => {
@@ -21,8 +22,8 @@ const ModalViewDocumentShip3 = ({ closeModal, idShip, token }) => {
     useEffect(() => {
         const fetchDocument = async () => {
             setLoading(true);
-            try {
-                const response = await axios.get('http://localhost:8115/technical_inspection/get_document', {
+            try { 
+                const response = await axios.get(`${myAPI}/technical_inspection/get_document`, {
                     params: { pIdShip: idShip },
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -45,17 +46,15 @@ const ModalViewDocumentShip3 = ({ closeModal, idShip, token }) => {
 
     const downloadDocument = async () => {
         try {
-            // Solicitar al backend para obtener la URL prefirmada
-            const response = await axios.get('http://localhost:8115/technical_inspection/download_image', {
+            
+            const response = await axios.get(`${myAPI}/technical_inspection/download_image`, {
                 params: { pIdShip: idShip },
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
     
-            // Obtener la URL prefirmada de la respuesta
             const presignedUrl = response.data.value;
-            console.log("URL de descarga: ", presignedUrl);
             
             // Crear un enlace para forzar la descarga
             const link = document.createElement('a');
@@ -72,26 +71,26 @@ const ModalViewDocumentShip3 = ({ closeModal, idShip, token }) => {
     
     
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Mi Documento</h1>
                 </div>
-                <div className="body-container">
-                    {!loading && <div className="body-container">
+                <div className="modal-body-container">
+                    {!loading && <div className="modal-body-container">
                             <img src={image} alt="Documento" style={{ maxWidth: '100%' }}></img>
                             <hr></hr>
-                            <p>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
+                            <p style={{ color: 'gray', fontSize: '16px', marginBottom: '30px' }}>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
                         </div> }
 
-                    {loading && <div className="body-container">
+                    {loading && <div className="modal-body-container">
                         <p>Cargando{dots}</p>
                         </div> }
                 </div>
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal} disabled={loading}>Cancelar</button>
                     <button type="button" onClick={downloadDocument} disabled={loading}>Descargar</button>
                 </div>

@@ -7,20 +7,22 @@ const ModalViewDocumentShip2 = ({ closeModal, idShip, token }) => {
     const [image, setImage] = useState(null);   
     const [loading, setLoading] = useState(false);
     const [dots, setDots] = useState('');
+
+    const myAPI = "http://localhost:8115";
          
     useEffect(() => {
             const interval = setInterval(() => {
                     setDots((prev) => (prev.length < 3 ? prev + '.' : ''));
-                }, 400); // Cambia cada 500ms
+                }, 400);
                          
-                return () => clearInterval(interval); // Limpia el intervalo al desmontar
+                return () => clearInterval(interval);
             }, []);   
 
     useEffect(() => {
         const fetchDocument = async () => {
             setLoading(true);
-            try {
-                const response = await axios.get('http://localhost:8115/certificate_navigability/get_document', {
+            try { 
+                const response = await axios.get(`${myAPI}/certificate_navigability/get_document`, {
                     params: { pIdShip: idShip },
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -43,8 +45,8 @@ const ModalViewDocumentShip2 = ({ closeModal, idShip, token }) => {
 
     const downloadDocument = async () => {
         try {
-            // Solicitar al backend para obtener la URL prefirmada
-            const response = await axios.get('http://localhost:8115/certificate_navigability/download_image', {
+            
+            const response = await axios.get(`${myAPI}/certificate_navigability/download_image`, {
                 params: { pIdShip: idShip },
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -70,24 +72,24 @@ const ModalViewDocumentShip2 = ({ closeModal, idShip, token }) => {
     
     
     return (
-        <div className="background-container">
-            <div className="main-container">
+        <div className="modal-background-container">
+            <div className="modal-main-container">
                 <div className="close-button">
                     <button onClick={closeModal}>X</button>
                 </div>
-                <div className="title-container">
+                <div className="modal-title-container">
                     <h1>Mi Documento</h1>
                 </div>
-                    {!loading && <div className="body-container">
+                    {!loading && <div className="modal-body-container">
                         <img src={image} alt="Documento" style={{ maxWidth: '100%' }}></img>
                         <hr></hr>
-                        <p>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
+                        <p style={{ color: 'gray', fontSize: '16px', marginBottom: '30px' }}>Fecha de vencimiento: <strong>{expirationDate}</strong></p>
                     </div> }
 
-                    {loading && <div className="body-container">
+                    {loading && <div className="modal-body-container">
                         <p>Cargando{dots}</p>
                     </div> }
-                <div className="footer-container">
+                <div className="modal-footer-container">
                     <button onClick={closeModal} disabled={loading}>Cancelar</button>
                     <button type="button" onClick={downloadDocument} disabled={loading}>Descargar</button>
                 </div>
